@@ -18,11 +18,11 @@ class BookFactory extends Factory
     {
         return [
             'isbn' => $this->faker->numberBetween(1, 500),
-            'title' => $this->faker->sentence(),
+            'title' => $this->faker->sentence(5),
             'year' => $this->faker->year(),
             'publisher_id' => $this->faker->numberBetween(1, 5),
-            'author_id' => $this->faker->numberBetween(1, 5),
-            'catalog_id' => $this->faker->numberBetween(1, 5),
+            'author_id' => $this->faker->numberBetween(1, 20),
+            'catalog_id' => $this->faker->numberBetween(1, 4),
             'qty' => $this->faker->numberBetween(1, 20),
             'price' => $this->faker->numberBetween(1000, 50000),
         ];
