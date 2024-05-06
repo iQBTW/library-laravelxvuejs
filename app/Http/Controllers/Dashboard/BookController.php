@@ -3,8 +3,12 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Models\Book;
-use App\Http\Controllers\Controller;
+use App\Models\Author;
+use App\Models\Catalog;
+use App\Models\Publisher;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
 
 class BookController extends Controller
 {
@@ -13,9 +17,24 @@ class BookController extends Controller
      */
     public function index()
     {
-        return view('pages.dashboard.book.index', [
+        $books = DB::table('books')
+                ->join('publishers', 'books.publisher_id', '=', 'publishers.id')
+                ->join('authors', 'books.author_id', '=', 'authors.id')
+                ->join('catalogs', 'books.catalog_id', '=', 'catalogs.id')
+                ->select(
+                    'books.isbn as isbn',
+                    'books.title as title',
+                    'books.year as year',
+                    'publishers.name as publisher',
+                    'authors.name as author',
+                    'catalogs.name as catalog',
+                    'books.qty as qty',
+                    'books.price as price',
+                )
+                ->orderBy('books.year')
+                ->get();
 
-        ]);
+        return view('pages.dashboard.book.index', compact('books'));
     }
 
     /**
