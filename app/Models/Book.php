@@ -8,4 +8,18 @@ use Illuminate\Database\Eloquent\Model;
 class Book extends Model
 {
     use HasFactory;
+
+    protected $fillable = ['isbn', 'title', 'year', 'publisher_id', 'author_id', 'catalog_id', 'qty', 'price'];
+
+    public function publishers() {
+        return $this->hasOne(Publisher::class);
+    }
+
+    public function authors() {
+        return $this->hasOne(Author::class);
+    }
+
+    public function catalogs() {
+        return $this->hasOne(Catalog::class);
+    }
 }
