@@ -4,6 +4,10 @@
     Dashboard
 @endsection
 
+@section('dashboard-title')
+    Dashboard
+@endsection
+
 @section('content')
     <section class="content">
         <div class="container-fluid">
@@ -586,5 +590,4 @@
         <!-- /.row (main row) -->
         </div><!-- /.container-fluid -->
     </section>
-</div>
 @endsection

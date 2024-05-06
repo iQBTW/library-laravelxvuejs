@@ -13,7 +13,9 @@ class PublisherController extends Controller
      */
     public function index()
     {
-        //
+        return view('pages.dashboard.publisher.index', [
+            'publishers' => Publisher::all()
+        ]);
     }
 
     /**

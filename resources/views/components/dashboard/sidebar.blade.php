@@ -36,11 +36,51 @@
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
-          <li class="nav-item menu-open">
-            <a href="#" class="nav-link active">
+          <li class="nav-item {{ request()->is('dashboard/overview') ? 'menu-open' : '' }}">
+            <a href="{{ route('dashboard') }}" class="nav-link {{ request()->is('dashboard/overview') ? 'active' : '' }}">
               <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>
                 Dashboard
+              </p>
+            </a>
+          </li>
+          <li class="nav-item {{ request()->is('dashboard/catalog') ? 'menu-open' : '' }}">
+            <a href="{{ route('dashboard.catalog') }}" class="nav-link {{ request()->is('dashboard/catalog') ? 'active' : '' }}">
+              <i class="nav-icon fas fa-tachometer-alt"></i>
+              <p>
+                Catalog
+              </p>
+            </a>
+          </li>
+          <li class="nav-item {{ request()->is('dashboard/publisher') ? 'menu-open' : '' }}">
+            <a href="{{ route('dashboard.publisher') }}" class="nav-link {{ request()->is('dashboard/publisher') ? 'active' : '' }}">
+              <i class="nav-icon fas fa-tachometer-alt"></i>
+              <p>
+                Publisher
+              </p>
+            </a>
+          </li>
+          <li class="nav-item {{ request()->is('dashboard/author') ? 'menu-open' : '' }}">
+            <a href="{{ route('dashboard.author') }}" class="nav-link {{ request()->is('dashboard/author') ? 'active' : '' }}">
+              <i class="nav-icon fas fa-tachometer-alt"></i>
+              <p>
+                Author
+              </p>
+            </a>
+          </li>
+          <li class="nav-item {{ request()->is('dashboard/book') ? 'menu-open' : '' }}">
+            <a href="{{ route('dashboard.book') }}" class="nav-link {{ request()->is('dashboard/book') ? 'active' : '' }}">
+              <i class="nav-icon fas fa-tachometer-alt"></i>
+              <p>
+                Book
+              </p>
+            </a>
+          </li>
+          <li class="nav-item {{ request()->is('dashboard/member') ? 'menu-open' : '' }}">
+            <a href="{{ route('dashboard.member') }}" class="nav-link {{ request()->is('dashboard/member') ? 'active' : '' }}">
+              <i class="nav-icon fas fa-tachometer-alt"></i>
+              <p>
+                Member
               </p>
             </a>
           </li>

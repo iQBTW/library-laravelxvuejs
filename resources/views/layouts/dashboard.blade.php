@@ -23,6 +23,9 @@
     <link rel="stylesheet" href={{ asset('dashboard/plugins/daterangepicker/daterangepicker.css') }}>
     <!-- summernote -->
     <link rel="stylesheet" href={{ asset('dashboard/plugins/summernote/summernote-bs4.min.css') }}>
+    <!-- DataTables -->
+    <link rel="stylesheet" href={{ asset('dashboard/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}>
+    <link rel="stylesheet" href={{ asset('dashboard/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}>
     <title>@yield('title')</title>
 </head>
 <body class="hold-tranhold-transition sidebar-mini layout-fixed">
@@ -33,11 +36,14 @@
 
         @include('components.dashboard.sidebar')
 
-        @include('components.dashboard.breadcrumb')
+        <div class="content-wrapper">
+            @include('components.dashboard.breadcrumb')
 
-        @yield('content')
+            @yield('content')
+        </div>
 
         @include('components.dashboard.footer')
+
     </div>
 
 <script src={{ asset('dashboard/plugins/jquery/jquery.min.js') }}></script>
@@ -71,5 +77,9 @@
 <script src={{ asset('dashboard/js/adminlte.js') }}></script>
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <script src={{ asset('dashboard/js/pages/dashboard.js') }}></script>
+<script src={{ asset('dashboard/plugins/datatables/jquery.dataTables.min.js') }}></script>
+<script src={{ asset('dashboard/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}></script>
+<script src={{ asset('dashboard/plugins/datatables-responsive/js/dataTables.responsive.min.js') }}></script>
+<script src={{ asset('dashboard/plugins/datatables-responsive/js/responsive.bootstrap4.min.js') }}></script>
 </body>
 </html>
