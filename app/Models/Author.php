@@ -9,6 +9,6 @@ class Author extends Model
 {
     use HasFactory;
     public function books() {
-        return $this->belongsTo(Book::class);
+        return $this->hasMany(Book::class);
     }
 }

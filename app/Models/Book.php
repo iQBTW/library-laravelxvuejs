@@ -12,14 +12,14 @@ class Book extends Model
     protected $fillable = ['isbn', 'title', 'year', 'publisher_id', 'author_id', 'catalog_id', 'qty', 'price'];
 
     public function publishers() {
-        return $this->hasOne(Publisher::class);
+        return $this->belongsTo(Publisher::class);
     }
 
     public function authors() {
-        return $this->hasOne(Author::class);
+        return $this->belongsTo(Author::class);
     }
 
     public function catalogs() {
-        return $this->hasOne(Catalog::class);
+        return $this->belongsTo(Catalog::class);
     }
 }
