@@ -34,7 +34,7 @@ class UserFactory extends Factory
             'phone_number' => $this->faker->numerify('085#########'),
             'address' => $this->faker->address(),
             'remember_token' => Str::random(10),
-            'member_id' => $this->faker->numberBetween(1, Member::count())
+            'member_id' => $this->faker->randomElement(Member::where('id', 2)->orWhere('id', 3)->orWhere('id', 4)->pluck('id'))
         ];
     }
 

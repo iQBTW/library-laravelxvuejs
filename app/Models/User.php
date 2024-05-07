@@ -15,6 +15,10 @@ class User extends Authenticatable
         return $this->belongsTo(Member::class);
     }
 
+    public function transactions() {
+        return $this->hasMany(Transaction::class);
+    }
+
     /**
      * The attributes that are mass assignable.
      *
@@ -24,6 +28,9 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'gender',
+        'phone_number',
+        'address',
     ];
 
     /**
