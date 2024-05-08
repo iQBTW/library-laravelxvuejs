@@ -61,26 +61,34 @@
             </a>
           </li>
           <li class="nav-item {{ request()->is('dashboard/author') ? 'menu-open' : '' }}">
-            <a href="{{ route('dashboard.author') }}" class="nav-link {{ request()->is('dashboard/author') ? 'active' : '' }}">
-              <i class="nav-icon fas fa-tachometer-alt"></i>
+            <a href="{{ route('author.index') }}" class="nav-link {{ request()->is('dashboard/author') ? 'active' : '' }}">
+              <i class="nav-icon fas fa-cubes"></i>
               <p>
                 Author
               </p>
             </a>
           </li>
           <li class="nav-item {{ request()->is('dashboard/book') ? 'menu-open' : '' }}">
-            <a href="{{ route('dashboard.book') }}" class="nav-link {{ request()->is('dashboard/book') ? 'active' : '' }}">
-              <i class="nav-icon fas fa-tachometer-alt"></i>
+            <a href="{{ route('book.index') }}" class="nav-link {{ request()->is('dashboard/book') ? 'active' : '' }}">
+              <i class="nav-icon fas fa-book"></i>
               <p>
                 Book
               </p>
             </a>
           </li>
           <li class="nav-item {{ request()->is('dashboard/member') ? 'menu-open' : '' }}">
-            <a href="{{ route('dashboard.member') }}" class="nav-link {{ request()->is('dashboard/member') ? 'active' : '' }}">
-              <i class="nav-icon fas fa-tachometer-alt"></i>
+            <a href="{{ route('member.index') }}" class="nav-link {{ request()->is('dashboard/member') ? 'active' : '' }}">
+              <i class="nav-icon fas fa-credit-card"></i>
               <p>
                 Member
+              </p>
+            </a>
+          </li>
+          <li class="nav-item {{ request()->is('dashboard/user') ? 'menu-open' : '' }}">
+            <a href="{{ route('user.index') }}" class="nav-link {{ request()->is('dashboard/user') ? 'active' : '' }}">
+              <i class="nav-icon fas fa-user-circle"></i>
+              <p>
+                User
               </p>
             </a>
           </li>

@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Dashboard;
 
-use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Models\Member;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -13,7 +15,20 @@ class UserController extends Controller
      */
     public function index()
     {
-        // return view();
+        $users = User::select('*')
+                    ->join('members', 'users.member_id', '=', 'members.id')
+                    ->select(
+                        'users.name as name',
+                        'users.email as email',
+                        'users.gender as gender',
+                        'users.address as address',
+                        'members.name as member'
+                    )
+                    ->orderBy('members.name', 'asc')
+                    ->get();
+        $members = Member::get();
+
+        return view('pages.dashboard.user.index', compact('users'));
     }
 
     /**
@@ -21,7 +36,9 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
+        $members = Member::get();
+
+        return view('pages.dashboard.user.create', compact('members'));
     }
 
     /**
@@ -29,7 +46,23 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->validate([
+            'name' => 'required|string|unique:users,name',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|string|max:62',
+            'gender' => 'required',
+            'phone_number' => 'required|string|max:16',
+            'address' => 'required|string',
+            'member_id' => 'required|exists:members,id',
+        ]);
+
+        if($request->has('password')){
+            $data['password'] = Hash::make($data['password']);
+        }
+
+        User::create($data);
+
+        return redirect()->route('user.index');
     }
 
     /**

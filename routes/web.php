@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Dashboard\BookController;
+use App\Http\Controllers\Dashboard\UserController;
 use App\Http\Controllers\Dashboard\AuthorController;
 use App\Http\Controllers\Dashboard\MemberController;
 use App\Http\Controllers\Dashboard\CatalogController;
@@ -32,10 +33,28 @@ Route::prefix('dashboard')->middleware('auth')->group(function () {
         Route::post('store', [PublisherController::class, 'store'])->name('store');
     });
 
-    Route::get('author', [AuthorController::class, 'index'])->name('dashboard.author');
+    Route::prefix('author')->name('author.')->group(function (){
+        Route::get('', [AuthorController::class, 'index'])->name('index');
+        Route::get('create', [AuthorController::class, 'create'])->name('create');
+        Route::post('store', [AuthorController::class, 'store'])->name('store');
+    });
 
-    Route::get('book', [BookController::class, 'index'])->name('dashboard.book');
+    Route::prefix('book')->name('book.')->group(function (){
+        Route::get('', [BookController::class, 'index'])->name('index');
+        Route::get('create', [BookController::class, 'create'])->name('create');
+        Route::post('store', [BookController::class, 'store'])->name('store');
+    });
 
-    Route::get('member', [MemberController::class, 'index'])->name('dashboard.member');
+    Route::prefix('member')->name('member.')->group(function (){
+        Route::get('', [MemberController::class, 'index'])->name('index');
+        Route::get('create', [MemberController::class, 'create'])->name('create');
+        Route::post('store', [MemberController::class, 'store'])->name('store');
+    });
+
+    Route::prefix('user')->name('user.')->group(function (){
+        Route::get('', [UserController::class, 'index'])->name('index');
+        Route::get('create', [UserController::class, 'create'])->name('create');
+        Route::post('store', [UserController::class, 'store'])->name('store');
+    });
 
 });
