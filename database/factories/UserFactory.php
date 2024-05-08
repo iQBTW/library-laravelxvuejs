@@ -26,15 +26,16 @@ class UserFactory extends Factory
     {
 
         return [
-            'name' => $this->faker->name(),
-            'email' => $this->faker->safeEmail(),
+            'name' => 'Admin',
+            'email' => 'admin@gmail.com',
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('123qwerty'),
             'gender' => $this->faker->randomElement(['M', 'F']),
             'phone_number' => $this->faker->numerify('085#########'),
             'address' => $this->faker->address(),
             'remember_token' => Str::random(10),
-            'member_id' => $this->faker->randomElement(Member::where('id', 2)->orWhere('id', 3)->orWhere('id', 4)->pluck('id'))
+            // 'member_id' => $this->faker->randomElement(Member::where('id', 2)->orWhere('id', 3)->orWhere('id', 4)->pluck('id'))
+            'member_id' => $this->faker->randomElement(Member::where('id', 1)->pluck('id'))
         ];
     }
 

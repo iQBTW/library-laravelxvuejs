@@ -14,7 +14,7 @@ class PublisherController extends Controller
     public function index()
     {
         return view('pages.dashboard.publisher.index', [
-            'publishers' => Publisher::all()
+            'publishers' => Publisher::paginate(10),
         ]);
     }
 
@@ -23,7 +23,7 @@ class PublisherController extends Controller
      */
     public function create()
     {
-        return view('pages.dashboard.publisher.create');
+        // return view('pages.dashboard.publisher.create');
     }
 
     /**
@@ -39,7 +39,10 @@ class PublisherController extends Controller
         ]);
 
         Publisher::create($data);
-        return redirect()->route('publisher.index');
+
+        toastr()->success('Publisher data has been created successfully!');
+
+        return redirect('publishers');
     }
 
     /**
@@ -63,7 +66,18 @@ class PublisherController extends Controller
      */
     public function update(Request $request, Publisher $publisher)
     {
-        //
+        $data = $request->validate([
+            'name' => 'required|string',
+            'email' => 'required|email',
+            'phone_number' => 'required|string|max:16',
+            'address' => 'required|string'
+        ]);
+
+        $publisher->update($data);
+
+        toastr()->success('Publisher Data has been edited successfully!');
+
+        return redirect('publishers');
     }
 
     /**
@@ -71,6 +85,8 @@ class PublisherController extends Controller
      */
     public function destroy(Publisher $publisher)
     {
-        //
+        $publisher->delete();
+
+        return redirect('publishers');
     }
 }

@@ -14,7 +14,7 @@ class AuthorController extends Controller
     public function index()
     {
         return view('pages.dashboard.author.index', [
-            'authors' => Author::all()
+            'authors' => Author::paginate(10)
         ]);
     }
 
@@ -31,7 +31,16 @@ class AuthorController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->validate([
+           'name' => 'required|string|unique:authors,name',
+           'email' => 'required|email|unique:authors,email',
+           'phone_number' => 'required|string|max:16',
+           'address' => 'required|string',
+        ]);
+
+        Author::create($data);
+
+        return redirect('authors');
     }
 
     /**
@@ -47,7 +56,7 @@ class AuthorController extends Controller
      */
     public function edit(Author $author)
     {
-        //
+
     }
 
     /**
@@ -55,7 +64,16 @@ class AuthorController extends Controller
      */
     public function update(Request $request, Author $author)
     {
-        //
+        $data = $request->validate([
+            'name' => 'required|string',
+            'email' => 'required|email',
+            'phone_number' => 'required|string|max:16',
+            'address' => 'required|string',
+         ]);
+
+         $author->update($data);
+
+         return redirect('authors');
     }
 
     /**
@@ -63,6 +81,8 @@ class AuthorController extends Controller
      */
     public function destroy(Author $author)
     {
-        //
+        $author->delete();
+
+        return redirect('authors');
     }
 }

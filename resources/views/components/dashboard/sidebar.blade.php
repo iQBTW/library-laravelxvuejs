@@ -53,7 +53,7 @@
             </a>
           </li>
           <li class="nav-item {{ request()->is('dashboard/publisher') ? 'menu-open' : '' }}">
-            <a href="{{ route('publisher.index') }}" class="nav-link {{ request()->is('dashboard/publisher') ? 'active' : '' }}">
+            <a href="{{ url('publishers') }}" class="nav-link {{ request()->is('dashboard/publisher') ? 'active' : '' }}">
               <i class="nav-icon fas fa-id-badge"></i>
               <p>
                 Publisher
@@ -61,7 +61,7 @@
             </a>
           </li>
           <li class="nav-item {{ request()->is('dashboard/author') ? 'menu-open' : '' }}">
-            <a href="{{ route('author.index') }}" class="nav-link {{ request()->is('dashboard/author') ? 'active' : '' }}">
+            <a href="{{ url('authors') }}" class="nav-link {{ request()->is('dashboard/author') ? 'active' : '' }}">
               <i class="nav-icon fas fa-cubes"></i>
               <p>
                 Author

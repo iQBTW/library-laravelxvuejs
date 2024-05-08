@@ -18,6 +18,9 @@ Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 Auth::routes();
 
+Route::resource('authors', AuthorController::class);
+Route::resource('publishers', PublisherController::class);
+
 Route::prefix('dashboard')->middleware('auth')->group(function () {
     Route::get('overview', [DashboardController::class, 'index'])->name('dashboard');
 
@@ -27,17 +30,17 @@ Route::prefix('dashboard')->middleware('auth')->group(function () {
         Route::post('store', [CatalogController::class, 'store'])->name('store');
     });
 
-    Route::prefix('publisher')->name('publisher.')->group(function (){
-        Route::get('', [PublisherController::class, 'index'])->name('index');
-        Route::get('create', [PublisherController::class, 'create'])->name('create');
-        Route::post('store', [PublisherController::class, 'store'])->name('store');
-    });
+    // Route::prefix('publisher')->name('publisher.')->group(function (){
+    //     Route::get('', [PublisherController::class, 'index'])->name('index');
+    //     Route::get('create', [PublisherController::class, 'create'])->name('create');
+    //     Route::post('store', [PublisherController::class, 'store'])->name('store');
+    // });
 
-    Route::prefix('author')->name('author.')->group(function (){
-        Route::get('', [AuthorController::class, 'index'])->name('index');
-        Route::get('create', [AuthorController::class, 'create'])->name('create');
-        Route::post('store', [AuthorController::class, 'store'])->name('store');
-    });
+    // Route::prefix('author')->name('author.')->group(function (){
+    //     Route::get('', [AuthorController::class, 'index'])->name('index');
+    //     Route::get('create', [AuthorController::class, 'create'])->name('create');
+    //     Route::post('store', [AuthorController::class, 'store'])->name('store');
+    // });
 
     Route::prefix('book')->name('book.')->group(function (){
         Route::get('', [BookController::class, 'index'])->name('index');
