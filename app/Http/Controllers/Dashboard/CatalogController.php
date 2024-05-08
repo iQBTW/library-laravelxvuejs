@@ -14,7 +14,7 @@ class CatalogController extends Controller
     public function index()
     {
         return view('pages.dashboard.catalog.index', [
-            'catalogs' => Catalog::all()
+            'catalogs' => Catalog::paginate(10)
         ]);
     }
 
@@ -23,7 +23,7 @@ class CatalogController extends Controller
      */
     public function create()
     {
-        //
+        return view('pages.dashboard.catalog.create');
     }
 
     /**
@@ -31,7 +31,12 @@ class CatalogController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->validate([
+            'name' => 'required|string|unique:name'
+        ]);
+
+        Catalog::create($data);
+        return redirect()->route('catalog.index');
     }
 
     /**
