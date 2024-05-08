@@ -2,20 +2,18 @@
 
 namespace App\Http\Controllers\Dashboard;
 
-use App\Models\Catalog;
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Http\Request;
 
-class CatalogController extends Controller
+class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return view('pages.dashboard.catalog.index', [
-            'catalogs' => Catalog::paginate(10)
-        ]);
+        // return view();
     }
 
     /**
@@ -23,7 +21,7 @@ class CatalogController extends Controller
      */
     public function create()
     {
-        return view('pages.dashboard.catalog.create');
+        //
     }
 
     /**
@@ -31,18 +29,13 @@ class CatalogController extends Controller
      */
     public function store(Request $request)
     {
-        $data = $request->validate([
-            'name' => 'required|string|unique:name'
-        ]);
-
-        Catalog::create($data);
-        return redirect()->route('catalog.index');
+        //
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Catalog $catalog)
+    public function show(User $user)
     {
         //
     }
@@ -50,7 +43,7 @@ class CatalogController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Catalog $catalog)
+    public function edit(User $user)
     {
         //
     }
@@ -58,7 +51,7 @@ class CatalogController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Catalog $catalog)
+    public function update(Request $request, User $user)
     {
         //
     }
@@ -66,7 +59,7 @@ class CatalogController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Catalog $catalog)
+    public function destroy(User $user)
     {
         //
     }

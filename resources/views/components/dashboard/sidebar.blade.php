@@ -45,16 +45,16 @@
             </a>
           </li>
           <li class="nav-item {{ request()->is('dashboard/catalog') ? 'menu-open' : '' }}">
-            <a href="{{ route('dashboard.catalog') }}" class="nav-link {{ request()->is('dashboard/catalog') ? 'active' : '' }}">
-              <i class="nav-icon fas fa-tachometer-alt"></i>
+            <a href="{{ route('catalog.index') }}" class="nav-link {{ request()->is('dashboard/catalog') ? 'active' : '' }}">
+              <i class="nav-icon fas fa-paperclip"></i>
               <p>
                 Catalog
               </p>
             </a>
           </li>
           <li class="nav-item {{ request()->is('dashboard/publisher') ? 'menu-open' : '' }}">
-            <a href="{{ route('dashboard.publisher') }}" class="nav-link {{ request()->is('dashboard/publisher') ? 'active' : '' }}">
-              <i class="nav-icon fas fa-tachometer-alt"></i>
+            <a href="{{ route('publisher.index') }}" class="nav-link {{ request()->is('dashboard/publisher') ? 'active' : '' }}">
+              <i class="nav-icon fas fa-id-badge"></i>
               <p>
                 Publisher
               </p>

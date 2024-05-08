@@ -17,7 +17,7 @@ class BookController extends Controller
      */
     public function index()
     {
-        $books = DB::table('books')
+        $books = Book::select('*')
                 ->join('publishers', 'books.publisher_id', '=', 'publishers.id')
                 ->join('authors', 'books.author_id', '=', 'authors.id')
                 ->join('catalogs', 'books.catalog_id', '=', 'catalogs.id')

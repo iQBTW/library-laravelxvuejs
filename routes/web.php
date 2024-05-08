@@ -20,9 +20,17 @@ Auth::routes();
 Route::prefix('dashboard')->middleware('auth')->group(function () {
     Route::get('overview', [DashboardController::class, 'index'])->name('dashboard');
 
-    Route::get('catalog', [CatalogController::class, 'index'])->name('dashboard.catalog');
+    Route::prefix('catalog')->name('catalog.')->group(function (){
+        Route::get('', [CatalogController::class, 'index'])->name('index');
+        Route::get('create', [CatalogController::class, 'create'])->name('create');
+        Route::post('store', [CatalogController::class, 'store'])->name('store');
+    });
 
-    Route::get('publisher', [PublisherController::class, 'index'])->name('dashboard.publisher');
+    Route::prefix('publisher')->name('publisher.')->group(function (){
+        Route::get('', [PublisherController::class, 'index'])->name('index');
+        Route::get('create', [PublisherController::class, 'create'])->name('create');
+        Route::post('store', [PublisherController::class, 'store'])->name('store');
+    });
 
     Route::get('author', [AuthorController::class, 'index'])->name('dashboard.author');
 

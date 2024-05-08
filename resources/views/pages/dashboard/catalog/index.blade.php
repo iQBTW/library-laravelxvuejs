@@ -20,7 +20,7 @@
 
                         <div class="card-body">
                             <div class="justify-content-end pb-2">
-                                <a href="#">
+                                <a href="{{ route('catalog.create') }}">
                                     <button class="btn btn-primary">Add Catalog</button>
                                 </a>
                             </div>
