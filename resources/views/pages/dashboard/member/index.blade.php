@@ -8,6 +8,10 @@
     Member
 @endsection
 
+@section('breadcrumb')
+    <li class="breadcrumb-item active">Member</li>
+@endsection
+
 @section('content')
 
     <div class="card-header">

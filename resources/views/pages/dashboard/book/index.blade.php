@@ -8,6 +8,10 @@
     Book
 @endsection
 
+@section('breadcrumb')
+    <li class="breadcrumb-item active">Book</li>
+@endsection
+
 @section('content')
 
     <div class="card-header">

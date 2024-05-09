@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers\Dashboard;
 
+use App\Models\Book;
 use App\Models\User;
+use App\Models\Author;
+use App\Models\Publisher;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -10,7 +13,10 @@ class DashboardController extends Controller
 {
     public function index() {
         return view('pages.dashboard.index', [
-            'user' => User::count()
+            'users' => User::count(),
+            'books' => Book::count(),
+            'publishers' => Publisher::count(),
+            'authors' => Author::count(),
         ]);
      }
 }

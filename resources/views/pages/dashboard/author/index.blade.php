@@ -8,6 +8,10 @@
     Author
 @endsection
 
+@section('breadcrumb')
+    <li class="breadcrumb-item active">Author</li>
+@endsection
+
 @section('css')
 
 @endsection

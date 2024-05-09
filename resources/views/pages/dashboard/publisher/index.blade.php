@@ -8,6 +8,10 @@
     Publisher
 @endsection
 
+@section('breadcrumb')
+    <li class="breadcrumb-item active">Publisher</li>
+@endsection
+
 @section('content')
     <div id="publishers">
         <section class="content">
