@@ -13,30 +13,29 @@
 @endsection
 
 @section('content')
-    <section class="content">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-12">
-                    <div class="card">
-                        <div class="card-header">
-                            <h3 class="card-title">List of Catalogs</h3>
-                        </div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">List of Catalogs</h3>
+                    </div>
 
-                        <div class="card-body">
-                            <div class="justify-content-end pb-2">
-                                <a href="{{ route('catalog.create') }}">
-                                    <button class="btn btn-primary">Add Catalog</button>
-                                </a>
-                            </div>
-                            <table id="example2" class="table table-bordered table-hover">
-                                <thead>
-                                    <tr>
-                                        <th>No</th>
-                                        <th>Name</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-                                @foreach ($catalogs as $catalog)
+                    <div class="card-body">
+                        <div class="justify-content-end pb-2">
+                            <a href="{{ route('catalog.create') }}">
+                                <button class="btn btn-primary">Add Catalog</button>
+                            </a>
+                        </div>
+                        <table id="example2" class="table table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>Name</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            @foreach ($catalogs as $catalog)
                                 <tbody>
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
@@ -47,19 +46,23 @@
                                         </td>
                                     </tr>
                                 </tbody>
-                                @endforeach
-                                <tfoot>
-                                    <tr>
-                                        <th>No</th>
-                                        <th>Name</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </tfoot>
-                            </table>
+                            @endforeach
+                            <tfoot>
+                                <tr>
+                                    <th>No</th>
+                                    <th>Name</th>
+                                    <th>Action</th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                        <div class="d-flex justify-content-between">
+                            <p>Showing {{ $catalogs->firstItem() }} to {{ $catalogs->lastItem() }} of
+                                {{ $catalogs->total() }} entries</p>
+                            {{ $catalogs->links() }}
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
 @endsection

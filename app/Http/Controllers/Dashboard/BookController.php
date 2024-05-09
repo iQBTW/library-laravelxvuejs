@@ -18,21 +18,21 @@ class BookController extends Controller
     public function index()
     {
         $books = Book::select('*')
-                ->join('publishers', 'books.publisher_id', '=', 'publishers.id')
-                ->join('authors', 'books.author_id', '=', 'authors.id')
-                ->join('catalogs', 'books.catalog_id', '=', 'catalogs.id')
-                ->select(
-                    'books.isbn as isbn',
-                    'books.title as title',
-                    'books.year as year',
-                    'publishers.name as publisher',
-                    'authors.name as author',
-                    'catalogs.name as catalog',
-                    'books.qty as qty',
-                    'books.price as price',
-                )
-                ->orderBy('books.year')
-                ->get();
+            ->join('publishers', 'books.publisher_id', '=', 'publishers.id')
+            ->join('authors', 'books.author_id', '=', 'authors.id')
+            ->join('catalogs', 'books.catalog_id', '=', 'catalogs.id')
+            ->select(
+                'books.isbn as isbn',
+                'books.title as title',
+                'books.year as year',
+                'publishers.name as publisher',
+                'authors.name as author',
+                'catalogs.name as catalog',
+                'books.qty as qty',
+                'books.price as price',
+            )
+            ->orderBy('books.year')
+            ->paginate(10);
 
         return view('pages.dashboard.book.index', compact('books'));
     }
