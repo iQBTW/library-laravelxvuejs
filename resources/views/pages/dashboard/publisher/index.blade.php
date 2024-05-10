@@ -37,7 +37,7 @@
                                         <th>Action</th>
                                     </tr>
                                 </thead>
-                                @foreach ($publishers as $publisher)
+                                {{-- @foreach ($publishers as $publisher)
                                     <tbody>
                                         <tr>
                                             <td>{{ $loop->iteration }}</td>
@@ -53,7 +53,7 @@
                                             </td>
                                         </tr>
                                     </tbody>
-                                @endforeach
+                                @endforeach --}}
                                 <tfoot>
                                     <tr>
                                         <th>No</th>
@@ -65,11 +65,11 @@
                                     </tr>
                                 </tfoot>
                             </table>
-                            <div class="d-flex justify-content-between">
+                            {{-- <div class="d-flex justify-content-between">
                                 <p>Showing {{ $publishers->firstItem() }} to {{ $publishers->lastItem() }} of
                                     {{ $publishers->total() }} entries</p>
                                 {{ $publishers->links() }}
-                            </div>
+                            </div> --}}
                         </div>
                     </div>
                 </div>

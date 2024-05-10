@@ -27,7 +27,7 @@
                                 <button class="btn btn-primary">Add Catalog</button>
                             </a>
                         </div>
-                        <table id="example2" class="table table-bordered table-hover">
+                        <table id="table" class="table table-bordered table-hover">
                             <thead>
                                 <tr>
                                     <th>No</th>
@@ -35,8 +35,8 @@
                                     <th>Action</th>
                                 </tr>
                             </thead>
-                            @foreach ($catalogs as $catalog)
-                                <tbody>
+                            <tbody>
+                                @foreach ($catalogs as $catalog)
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
                                         <td>{{ $catalog->name }}</td>
@@ -45,8 +45,8 @@
                                             <Button class="btn btn-danger">Delete</Button>
                                         </td>
                                     </tr>
-                                </tbody>
-                            @endforeach
+                                @endforeach
+                            </tbody>
                             <tfoot>
                                 <tr>
                                     <th>No</th>
@@ -55,11 +55,6 @@
                                 </tr>
                             </tfoot>
                         </table>
-                        <div class="d-flex justify-content-between">
-                            <p>Showing {{ $catalogs->firstItem() }} to {{ $catalogs->lastItem() }} of
-                                {{ $catalogs->total() }} entries</p>
-                            {{ $catalogs->links() }}
-                        </div>
                     </div>
                 </div>
             </div>

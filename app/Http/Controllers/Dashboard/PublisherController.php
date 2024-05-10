@@ -13,9 +13,15 @@ class PublisherController extends Controller
      */
     public function index()
     {
-        return view('pages.dashboard.publisher.index', [
-            'publishers' => Publisher::paginate(10),
-        ]);
+        return view('pages.dashboard.publisher.index');
+    }
+
+    public function api()
+    {
+        $publishers = Publisher::all();
+        $datatables = datatables()->of($publishers)->addIndexColumn();
+
+        return $datatables->make(true);
     }
 
     /**

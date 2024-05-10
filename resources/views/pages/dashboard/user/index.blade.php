@@ -24,7 +24,7 @@
                                     <button class="btn btn-primary">Add User</button>
                                 </a>
                             </div>
-                            <table id="example2" class="table table-bordered table-hover">
+                            <table id="table" class="table table-bordered table-hover">
                                 <thead>
                                     <tr>
                                         <th>No</th>
@@ -36,22 +36,22 @@
                                         <th>Action</th>
                                     </tr>
                                 </thead>
-                                @foreach ($users as $user)
                                 <tbody>
-                                    <tr>
-                                        <td>{{ $loop->iteration }}</td>
-                                        <td>{{ $user->name }}</td>
-                                        <td>{{ $user->email }}</td>
-                                        <td>{{ $user->gender }}</td>
-                                        <td>{{ $user->address }}</td>
-                                        <td>{{ $user->member }}</td>
-                                        <td>
-                                            <Button class="btn btn-warning">Edit</Button>
-                                            <Button class="btn btn-danger">Delete</Button>
-                                        </td>
-                                    </tr>
+                                    @foreach ($users as $user)
+                                        <tr>
+                                            <td>{{ $loop->iteration }}</td>
+                                            <td>{{ $user->name }}</td>
+                                            <td>{{ $user->email }}</td>
+                                            <td>{{ $user->gender }}</td>
+                                            <td>{{ $user->address }}</td>
+                                            <td>{{ $user->member }}</td>
+                                            <td>
+                                                <Button class="btn btn-warning">Edit</Button>
+                                                <Button class="btn btn-danger">Delete</Button>
+                                            </td>
+                                        </tr>
+                                    @endforeach
                                 </tbody>
-                                @endforeach
                                 <tfoot>
                                     <tr>
                                         <th>No</th>

@@ -27,7 +27,7 @@
                                 <button class="btn btn-primary">Add Book</button>
                             </a>
                         </div>
-                        <table id="example2" class="table table-bordered table-hover">
+                        <table id="table" class="table table-bordered table-hover">
                             <thead>
                                 <tr>
                                     <th>No</th>
@@ -42,8 +42,8 @@
                                     <th>Action</th>
                                 </tr>
                             </thead>
-                            @foreach ($books as $book)
-                                <tbody>
+                            <tbody>
+                                @foreach ($books as $book)
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
                                         <td>{{ $book->isbn }}</td>
@@ -59,8 +59,8 @@
                                             <Button class="btn btn-danger">Delete</Button>
                                         </td>
                                     </tr>
-                                </tbody>
-                            @endforeach
+                                @endforeach
+                            </tbody>
                             <tfoot>
                                 <tr>
                                     <th>No</th>
@@ -76,11 +76,6 @@
                                 </tr>
                             </tfoot>
                         </table>
-                        <div class="d-flex justify-content-between">
-                            <p>Showing {{ $books->firstItem() }} to {{ $books->lastItem() }} of
-                                {{ $books->total() }} entries</p>
-                            {{ $books->links() }}
-                        </div>
                     </div>
                 </div>
             </div>

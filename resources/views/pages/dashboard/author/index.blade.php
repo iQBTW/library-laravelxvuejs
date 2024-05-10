@@ -28,7 +28,7 @@
                                     Create New Author
                                 </button>
                             </div>
-                            <table id="datatable" class="table table-bordered table-hover">
+                            <table id="table" class="table table-bordered table-hover">
                                 <thead>
                                     <tr>
                                         <th>No</th>
@@ -39,8 +39,8 @@
                                         <th>Action</th>
                                     </tr>
                                 </thead>
-                                @foreach ($authors as $author)
-                                    <tbody>
+                                <tbody>
+                                    @foreach ($authors as $author)
                                         <tr>
                                             <td>{{ $loop->iteration }}</td>
                                             <td>{{ $author->name }}</td>
@@ -54,8 +54,8 @@
                                                     @click="confirmDelete({{ $author->id }})">Delete</Button>
                                             </td>
                                         </tr>
-                                    </tbody>
-                                @endforeach
+                                    @endforeach
+                                </tbody>
                                 <tfoot>
                                     <tr>
                                         <th>No</th>
@@ -67,11 +67,6 @@
                                     </tr>
                                 </tfoot>
                             </table>
-                            <div class="d-flex justify-content-between">
-                                <p>Showing {{ $authors->firstItem() }} to {{ $authors->lastItem() }} of
-                                    {{ $authors->total() }} entries</p>
-                                {{ $authors->links() }}
-                            </div>
                         </div>
                     </div>
                 </div>

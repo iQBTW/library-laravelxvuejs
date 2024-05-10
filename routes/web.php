@@ -21,10 +21,12 @@ Auth::routes();
 Route::resource('authors', AuthorController::class);
 Route::resource('publishers', PublisherController::class);
 
+Route::get('/api/publishers', [PublisherController::class, 'api']);
+
 Route::prefix('dashboard')->middleware('auth')->group(function () {
     Route::get('overview', [DashboardController::class, 'index'])->name('dashboard');
 
-    Route::prefix('catalog')->name('catalog.')->group(function (){
+    Route::prefix('catalog')->name('catalog.')->group(function () {
         Route::get('', [CatalogController::class, 'index'])->name('index');
         Route::get('create', [CatalogController::class, 'create'])->name('create');
         Route::post('store', [CatalogController::class, 'store'])->name('store');
@@ -42,19 +44,19 @@ Route::prefix('dashboard')->middleware('auth')->group(function () {
     //     Route::post('store', [AuthorController::class, 'store'])->name('store');
     // });
 
-    Route::prefix('book')->name('book.')->group(function (){
+    Route::prefix('book')->name('book.')->group(function () {
         Route::get('', [BookController::class, 'index'])->name('index');
         Route::get('create', [BookController::class, 'create'])->name('create');
         Route::post('store', [BookController::class, 'store'])->name('store');
     });
 
-    Route::prefix('member')->name('member.')->group(function (){
+    Route::prefix('member')->name('member.')->group(function () {
         Route::get('', [MemberController::class, 'index'])->name('index');
         Route::get('create', [MemberController::class, 'create'])->name('create');
         Route::post('store', [MemberController::class, 'store'])->name('store');
     });
 
-    Route::prefix('user')->name('user.')->group(function (){
+    Route::prefix('user')->name('user.')->group(function () {
         Route::get('', [UserController::class, 'index'])->name('index');
         Route::get('create', [UserController::class, 'create'])->name('create');
         Route::post('store', [UserController::class, 'store'])->name('store');

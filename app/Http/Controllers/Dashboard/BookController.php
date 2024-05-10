@@ -32,7 +32,7 @@ class BookController extends Controller
                 'books.price as price',
             )
             ->orderBy('books.year')
-            ->paginate(10);
+            ->get();
 
         return view('pages.dashboard.book.index', compact('books'));
     }

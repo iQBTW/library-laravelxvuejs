@@ -47,26 +47,16 @@
 
     @stack('prepend-script')
     <script src={{ asset('dashboard/plugins/jquery/jquery.min.js') }}></script>
-    <!-- jQuery UI 1.11.4 -->
-    <script src={{ asset('dashboard/plugins/jquery-ui/jquery-ui.min.js') }}></script>
     <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
     <script>
         $.widget.bridge('uibutton', $.ui.button)
     </script>
     <!-- Bootstrap 4 -->
     <script src={{ asset('dashboard/plugins/bootstrap/js/bootstrap.bundle.min.js') }}></script>
-    <!-- ChartJS -->
-    <script src={{ asset('dashboard/plugins/chart.js/Chart.min.js') }}></script>
-    <!-- Sparkline -->
-    <script src={{ asset('dashboard/plugins/sparklines/sparkline.js') }}></script>
-    <!-- jQuery Knob Chart -->
-    <script src={{ asset('dashboard/plugins/jquery-knob/jquery.knob.min.js') }}></script>
     <!-- overlayScrollbars -->
     <script src={{ asset('dashboard/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js') }}></script>
     <!-- AdminLTE App -->
-    <script src={{ asset('dashboard/js/adminlte.js') }}></script>
-    <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-    <script src={{ asset('dashboard/js/pages/dashboard.js') }}></script>
+    <script src={{ asset('dashboard/js/adminlte.min.js') }}></script>
     <!--- DataTables -->
     <script src={{ asset('dashboard/plugins/datatables/jquery.dataTables.min.js') }}></script>
     <script src={{ asset('dashboard/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}></script>
@@ -81,25 +71,35 @@
     <script src={{ asset('dashboard/plugins/datatables-buttons/js/buttons.print.min.js') }}></script>
     <script src={{ asset('dashboard/plugins/datatables-buttons/js/buttons.colVis.min.js') }}></script>
     <script>
-        $(function() {
-            $("#example").DataTable({
-                "responsive": true,
-                "lengthChange": false,
-                "autoWidth": false,
-                "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
-            }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
-            $('#datatable').DataTable({
-                "paging": false,
-                "lengthChange": false,
+        $(document).ready(function() {
+            $('#table').DataTable({
+                "paging": true,
+                "lengthChange": true,
                 "searching": true,
                 "ordering": true,
-                "info": false,
+                "info": true,
                 "autoWidth": false,
                 "responsive": true,
             });
         });
+        // $((document).ready(function()) {
+        //     $("#example").DataTable({
+        //         "responsive": true,
+        //         "lengthChange": false,
+        //         "autoWidth": false,
+        //         "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+        //     }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+        //     $('#datatable').DataTable({
+        //         "paging": true,
+        //         "lengthChange": false,
+        //         "searching": true,
+        //         "ordering": true,
+        //         "info": true,
+        //         "autoWidth": false,
+        //         "responsive": true,
+        //     });
+        // });
     </script>
-
     @stack('addon-script')
     @yield('js')
 </body>
