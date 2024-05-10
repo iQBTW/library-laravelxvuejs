@@ -26,7 +26,7 @@
                             <div class="justify-content-end pb-2">
                                 <button class="btn btn-primary" @click="addData()">Create New Publisher</button>
                             </div>
-                            <table id="datatable" class="table table-bordered table-hover">
+                            <table id="table" class="table table-bordered table-hover">
                                 <thead>
                                     <tr>
                                         <th>No</th>
@@ -37,8 +37,8 @@
                                         <th>Action</th>
                                     </tr>
                                 </thead>
-                                {{-- @foreach ($publishers as $publisher)
-                                    <tbody>
+                                <tbody>
+                                    {{-- @foreach ($publishers as $publisher)
                                         <tr>
                                             <td>{{ $loop->iteration }}</td>
                                             <td>{{ $publisher->name }}</td>
@@ -52,24 +52,9 @@
                                                     @click="confirmDelete({{ $publisher->id }})">Delete</Button>
                                             </td>
                                         </tr>
-                                    </tbody>
-                                @endforeach --}}
-                                <tfoot>
-                                    <tr>
-                                        <th>No</th>
-                                        <th>Name</th>
-                                        <th>Email</th>
-                                        <th>Phone Number</th>
-                                        <th>Address</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </tfoot>
+                                    @endforeach --}}
+                                </tbody>
                             </table>
-                            {{-- <div class="d-flex justify-content-between">
-                                <p>Showing {{ $publishers->firstItem() }} to {{ $publishers->lastItem() }} of
-                                    {{ $publishers->total() }} entries</p>
-                                {{ $publishers->links() }}
-                            </div> --}}
                         </div>
                     </div>
                 </div>
@@ -159,11 +144,11 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        Are you sure you want to delete this author?
+                        Are you sure you want to delete this publisher?
                     </div>
                     <div class="modal-footer">
                         <button class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                        <button class="btn btn-danger" @click="deleteData()">Delete</button>
+                        <button class="btn btn-danger">Delete</button>
                     </div>
                 </div>
             </div>
@@ -175,7 +160,47 @@
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
-    <script>
+    <script type="text/javascript">
+        var datas = []
+        var data = {}
+        var isEdit = false
+        var actionUrl = '{{ url('publishers') }}'
+        var apiUrl = '{{ url('api/publishers') }}'
+
+        var columns = [{
+                data: 'DT_RowIndex',
+                class: 'text-center',
+                orderable: true,
+            },
+            {
+                data: 'name',
+                class: 'text-center',
+                orderable: true,
+            },
+            {
+                data: 'email',
+                class: 'text-center',
+                orderable: true,
+            },
+            {
+                data: 'phone_number',
+                class: 'text-center',
+                orderable: true,
+            },
+            {
+                data: 'address',
+                class: 'text-center',
+                orderable: true,
+            },
+            {
+                render: function(data, type, row, meta) {
+                    return `<Button class="btn btn-warning" onclick="controller.editData(event, ${meta.row})">Edit</Button>
+                        <Button class="btn btn-danger" onclick="controller.editData(event, ${row.id})">Delete</Button>`;
+                },
+                orderable: false,
+            },
+        ];
+
         const {
             createApp
         } = Vue
@@ -183,12 +208,38 @@
         createApp({
             data() {
                 return {
-                    data: {},
-                    isEdit: false,
-                    actionUrl: '{{ url('publishers') }}',
+                    datas,
+                    data,
+                    isEdit,
+                    actionUrl,
+                    apiUrl,
                 }
             },
+            mounted() {
+                this.datatable();
+            },
             methods: {
+                datatable() {
+                    const _this = this;
+                    _this.table = $(document).ready(function() {
+                        $('#table').DataTable({
+                            ajax: {
+                                url: _this.apiUrl,
+                                type: 'GET'
+                            },
+                            columns,
+                            "paging": true,
+                            "lengthChange": true,
+                            "searching": true,
+                            "ordering": true,
+                            "info": true,
+                            "autoWidth": false,
+                            "responsive": true,
+                        });
+                    }).on('xhr', function() {
+                        _this.datas = _this.table.ajax.json().data
+                    });
+                },
                 addData() {
                     this.data = {}
                     axios.post(this.actionUrl, this.data)
@@ -200,18 +251,19 @@
                         });
                     $('#modal-lg').modal()
                 },
-                editData(data) {
-                    this.data = data
-                    this.isEdit = true
-                    this.actionUrl = '{{ url('publishers') }}' + '/' + data.id
-                    axios.put(this.actionUrl, this.data, )
-                        .then(response => {
-                            location.reload();
-                        })
-                        .catch(error => {
-                            console.error(error);
-                        });
-                    $('#modal-lg').modal()
+                editData(event, row) {
+                    console.log(event);
+                    // this.data = data
+                    // this.isEdit = true
+                    // this.actionUrl = '{{ url('publishers') }}' + '/' + data.id
+                    // axios.put(this.actionUrl, this.data, )
+                    //     .then(response => {
+                    //         location.reload();
+                    //     })
+                    //     .catch(error => {
+                    //         console.error(error);
+                    //     });
+                    // $('#modal-lg').modal()
                 },
                 confirmDelete(id) {
                     this.data = id

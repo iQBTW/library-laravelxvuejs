@@ -26,7 +26,7 @@
     <title>@yield('title')</title>
 </head>
 
-<body class="hold-tranhold-transition sidebar-mini layout-fixed">
+<body class="hold-transition sidebar-mini layout-fixed">
     <div class="wrapper">
         @include('components.dashboard.preloader')
 
@@ -47,10 +47,6 @@
 
     @stack('prepend-script')
     <script src={{ asset('dashboard/plugins/jquery/jquery.min.js') }}></script>
-    <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
-    <script>
-        $.widget.bridge('uibutton', $.ui.button)
-    </script>
     <!-- Bootstrap 4 -->
     <script src={{ asset('dashboard/plugins/bootstrap/js/bootstrap.bundle.min.js') }}></script>
     <!-- overlayScrollbars -->
@@ -70,7 +66,7 @@
     <script src={{ asset('dashboard/plugins/datatables-buttons/js/buttons.html5.min.js') }}></script>
     <script src={{ asset('dashboard/plugins/datatables-buttons/js/buttons.print.min.js') }}></script>
     <script src={{ asset('dashboard/plugins/datatables-buttons/js/buttons.colVis.min.js') }}></script>
-    <script>
+    {{-- <script>
         $(document).ready(function() {
             $('#table').DataTable({
                 "paging": true,
@@ -82,24 +78,7 @@
                 "responsive": true,
             });
         });
-        // $((document).ready(function()) {
-        //     $("#example").DataTable({
-        //         "responsive": true,
-        //         "lengthChange": false,
-        //         "autoWidth": false,
-        //         "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
-        //     }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
-        //     $('#datatable').DataTable({
-        //         "paging": true,
-        //         "lengthChange": false,
-        //         "searching": true,
-        //         "ordering": true,
-        //         "info": true,
-        //         "autoWidth": false,
-        //         "responsive": true,
-        //     });
-        // });
-    </script>
+    </script> --}}
     @stack('addon-script')
     @yield('js')
 </body>
