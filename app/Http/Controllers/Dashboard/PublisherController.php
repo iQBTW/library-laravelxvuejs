@@ -47,8 +47,6 @@ class PublisherController extends Controller
 
         Publisher::create($data);
 
-        toastr()->success('Publisher data has been created successfully!');
-
         return redirect('publishers');
     }
 
@@ -81,8 +79,6 @@ class PublisherController extends Controller
         ]);
 
         $publisher->update($data);
-
-        toastr()->success('Publisher Data has been edited successfully!');
 
         return redirect('publishers');
     }

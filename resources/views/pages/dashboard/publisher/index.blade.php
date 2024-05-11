@@ -13,7 +13,7 @@
 @endsection
 
 @section('content')
-    <div id="publishers">
+    <div id="app">
         <div class="container-fluid">
             <div class="row">
                 <div class="col-12">
@@ -170,12 +170,12 @@
         var columns = [{
                 data: 'DT_RowIndex',
                 class: 'text-center',
-                orderable: true,
+                orderable: false,
             },
             {
                 data: 'name',
                 class: 'text-center',
-                orderable: true,
+                orderable: false,
             },
             {
                 data: 'email',
@@ -193,16 +193,17 @@
                 orderable: true,
             },
             {
-                render: function(data, type, row, meta) {
-                    return `<Button class="btn btn-warning" onclick="controller.editData(event, ${meta.row})">Edit</Button>
-                        <Button class="btn btn-danger" onclick="controller.editData(event, ${row.id})">Delete</Button>`;
+                render: function(index, row, data, meta) {
+                    return `<Button class="btn btn-warning" onclick="app.editData(event, ${meta.row})">Edit</Button>
+                        <Button class="btn btn-danger" onclick="app.deleteData(event, ${data.id})">Delete</Button>`;
                 },
                 orderable: false,
             },
         ];
 
         const {
-            createApp
+            createApp,
+            ref
         } = Vue
 
         createApp({
@@ -227,7 +228,11 @@
                                 url: _this.apiUrl,
                                 type: 'GET'
                             },
-                            columns,
+                            columns: columns,
+                            columnDefs: [{
+                                defaultContent: "-",
+                                targets: "_all"
+                            }],
                             "paging": true,
                             "lengthChange": true,
                             "searching": true,
@@ -245,25 +250,21 @@
                     axios.post(this.actionUrl, this.data)
                         .then(response => {
                             location.reload();
+                        });
+                    $('#modal-lg').modal()
+                },
+                editData() {
+                    this.data = data
+                    this.isEdit = true
+                    this.actionUrl = '{{ url('publishers') }}' + '/' + data.id
+                    axios.put(this.actionUrl, this.data, )
+                        .then(response => {
+                            location.reload();
                         })
                         .catch(error => {
                             console.error(error);
                         });
                     $('#modal-lg').modal()
-                },
-                editData(event, row) {
-                    console.log(event);
-                    // this.data = data
-                    // this.isEdit = true
-                    // this.actionUrl = '{{ url('publishers') }}' + '/' + data.id
-                    // axios.put(this.actionUrl, this.data, )
-                    //     .then(response => {
-                    //         location.reload();
-                    //     })
-                    //     .catch(error => {
-                    //         console.error(error);
-                    //     });
-                    // $('#modal-lg').modal()
                 },
                 confirmDelete(id) {
                     this.data = id
@@ -280,8 +281,8 @@
                         .catch(error => {
                             console.error(error);
                         });
-                }
+                },
             },
-        }).mount('#publishers')
+        }).mount('#app')
     </script>
 @endsection
