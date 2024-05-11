@@ -13,7 +13,7 @@
 @endsection
 
 @section('content')
-    <div id="authors">
+    <div id="app">
         <div class="container-fluid">
             <div class="row">
                 <div class="col-12">
@@ -72,94 +72,97 @@
                 </div>
             </div>
         </div>
-    </div>
 
-    <div class="modal fade" id="modal-lg">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title">Add Author</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form method="POST" :action="actionUrl">
-                        @csrf
-                        <input type="hidden" name="_method" value="PUT" v-if="isEdit">
 
-                        <div class="form-group">
-                            <label for="name">Name</label>
-                            <input type="text" name="name" class="form-control @error('name') is-invalid @enderror"
-                                id="exampleInputEmail1" placeholder="Enter Name" :value="data.name">
+        <div class="modal fade" id="modal-lg">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Add Author</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form method="POST" :action="actionUrl">
+                            @csrf
+                            <input type="hidden" name="_method" value="PUT" v-if="isEdit">
 
-                            @error('name')
+                            <div class="form-group">
+                                <label for="name">Name</label>
+                                <input type="text" name="name"
+                                    class="form-control @error('name') is-invalid @enderror" id="exampleInputEmail1"
+                                    placeholder="Enter Name" :value="data.name">
+
+                                @error('name')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+
+                            <div class="form-group">
+                                <label for="email">Email</label>
+                                <input type="text" name="email"
+                                    class="form-control @error('email') is-invalid @enderror" id="email"
+                                    placeholder="Enter Email" :value="data.email">
+
+                                @error('email')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                            <div class="form-group">
+                                <label for="phone_number">Phone Number</label>
+                                <input type="number" name="phone_number"
+                                    class="form-control @error('phone_number') is-invalid @enderror" id="phone_number"
+                                    placeholder="Enter Phone Number" :value="data.phone_number">
+
+                                @error('phone_number')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                            <div class="form-group">
+                                <label for="address">Address</label>
+                                <textarea class="form-control @error('address') is-invalid @enderror" name="address" rows="3"
+                                    placeholder="Enter Your Address..." :value="data.address"></textarea>
+                            </div>
+
+                            @error('address')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
                                 </span>
                             @enderror
-                        </div>
-
-                        <div class="form-group">
-                            <label for="email">Email</label>
-                            <input type="text" name="email" class="form-control @error('email') is-invalid @enderror"
-                                id="email" placeholder="Enter Email" :value="data.email">
-
-                            @error('email')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                            @enderror
-                        </div>
-                        <div class="form-group">
-                            <label for="phone_number">Phone Number</label>
-                            <input type="number" name="phone_number"
-                                class="form-control @error('phone_number') is-invalid @enderror" id="phone_number"
-                                placeholder="Enter Phone Number" :value="data.phone_number">
-
-                            @error('phone_number')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                            @enderror
-                        </div>
-                        <div class="form-group">
-                            <label for="address">Address</label>
-                            <textarea class="form-control @error('address') is-invalid @enderror" name="address" rows="3"
-                                placeholder="Enter Your Address..." :value="data.address"></textarea>
-                        </div>
-
-                        @error('address')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                        @enderror
-                        <div class="modal-footer justify-content-between">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary">Save changes</button>
-                        </div>
-                    </form>
+                            <div class="modal-footer justify-content-between">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Save changes</button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="confirmDeleteModalLabel">Confirm Delete</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    Are you sure you want to delete this author?
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                    <button class="btn btn-danger" @click="deleteData()">Delete</button>
+        <div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="confirmDeleteModalLabel">Confirm Delete</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        Are you sure you want to delete this author?
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <button class="btn btn-danger" @click="deleteData()">Delete</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -167,32 +170,26 @@
 @endsection
 
 @section('js')
-    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-
     <script>
-        const {
-            createApp
-        } = Vue
+        var datas = []
+        var data = {}
+        var isEdit = false
+        var actionUrl = '{{ url('authors') }}'
+        var apiUrl = '{{ url('api/authors') }}'
 
-        createApp({
-            data() {
-                return {
-                    data: {},
-                    isEdit: false,
-                    actionUrl: '{{ url('authors') }}',
-                }
+        const app = new Vue({
+            el: '#app',
+            data: {
+                datas
+                data,
+                isEdit,
+                actionUrl,
+                apiUrl,
             },
             methods: {
                 addData() {
                     this.data = {}
-                    axios.post(this.actionUrl, this.data)
-                        .then(response => {
-                            location.reload();
-                        })
-                        .catch(error => {
-                            console.error(error);
-                        });
+                    this.actionUrl = '{{ url('authors') }}'
                     $('#modal-lg').modal()
                 },
                 editData(data) {
@@ -225,6 +222,6 @@
                         });
                 }
             },
-        }).mount('#authors')
+        })
     </script>
 @endsection

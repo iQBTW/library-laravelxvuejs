@@ -46,6 +46,10 @@
     </div>
 
     @stack('prepend-script')
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
     <script src={{ asset('dashboard/plugins/jquery/jquery.min.js') }}></script>
     <!-- Bootstrap 4 -->
     <script src={{ asset('dashboard/plugins/bootstrap/js/bootstrap.bundle.min.js') }}></script>

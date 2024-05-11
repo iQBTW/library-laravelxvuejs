@@ -20,8 +20,10 @@ Auth::routes();
 
 Route::resource('authors', AuthorController::class);
 Route::resource('publishers', PublisherController::class);
+Route::resource('members', MemberController::class);
 
 Route::get('/api/publishers', [PublisherController::class, 'api']);
+Route::get('/api/members', [MemberController::class, 'api']);
 
 Route::prefix('dashboard')->middleware('auth')->group(function () {
     Route::get('overview', [DashboardController::class, 'index'])->name('dashboard');
@@ -50,11 +52,11 @@ Route::prefix('dashboard')->middleware('auth')->group(function () {
         Route::post('store', [BookController::class, 'store'])->name('store');
     });
 
-    Route::prefix('member')->name('member.')->group(function () {
-        Route::get('', [MemberController::class, 'index'])->name('index');
-        Route::get('create', [MemberController::class, 'create'])->name('create');
-        Route::post('store', [MemberController::class, 'store'])->name('store');
-    });
+    // Route::prefix('member')->name('member.')->group(function () {
+    //     Route::get('', [MemberController::class, 'index'])->name('index');
+    //     Route::get('create', [MemberController::class, 'create'])->name('create');
+    //     Route::post('store', [MemberController::class, 'store'])->name('store');
+    // });
 
     Route::prefix('user')->name('user.')->group(function () {
         Route::get('', [UserController::class, 'index'])->name('index');

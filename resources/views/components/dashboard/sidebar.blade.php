@@ -83,9 +83,8 @@
                         </p>
                     </a>
                 </li>
-                <li class="nav-item {{ request()->is('dashboard/member') ? 'menu-open' : '' }}">
-                    <a href="{{ route('member.index') }}"
-                        class="nav-link {{ request()->is('dashboard/member') ? 'active' : '' }}">
+                <li class="nav-item {{ request()->is('members') ? 'menu-open' : '' }}">
+                    <a href="{{ url('members') }}" class="nav-link {{ request()->is('members') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-credit-card"></i>
                         <p>
                             Member

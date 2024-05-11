@@ -13,9 +13,16 @@ class MemberController extends Controller
      */
     public function index()
     {
-        return view('pages.dashboard.member.index', [
-            'members' => Member::paginate(10)
-        ]);
+        return view('pages.dashboard.member.index');
+    }
+
+    public function api()
+    {
+
+        $members = Member::all();
+        $datatables = datatables()->of($members)->addIndexColumn();
+
+        return $datatables->make(true);
     }
 
     /**
@@ -31,7 +38,13 @@ class MemberController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->validate([
+            'name' => 'required|string|unique:publishers,name',
+        ]);
+
+        Member::create($data);
+
+        return redirect('members');
     }
 
     /**
@@ -55,7 +68,13 @@ class MemberController extends Controller
      */
     public function update(Request $request, Member $member)
     {
-        //
+        $data = $request->validate([
+            'name' => 'required|string|unique:publishers,name',
+        ]);
+
+        $member->update($data);
+
+        return redirect('members');
     }
 
     /**
@@ -63,6 +82,8 @@ class MemberController extends Controller
      */
     public function destroy(Member $member)
     {
-        //
+        $member->delete();
+
+        return redirect('members');
     }
 }

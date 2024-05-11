@@ -78,7 +78,7 @@
                             <div class="form-group">
                                 <label for="name">Name</label>
                                 <input type="text" name="name"
-                                    class="form-control @error('name') is-invalid @enderror" id="exampleInputEmail1"
+                                    class="form-control @error('name') is-invalid @enderror" id="name"
                                     placeholder="Enter Name" :value="data.name">
 
                                 @error('name')
@@ -148,7 +148,7 @@
                     </div>
                     <div class="modal-footer">
                         <button class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                        <button class="btn btn-danger">Delete</button>
+                        <button class="btn btn-danger" @click="deleteData()">Delete</button>
                     </div>
                 </div>
             </div>
@@ -157,15 +157,13 @@
 @endsection
 
 @section('js')
-    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-
     <script type="text/javascript">
         var datas = []
         var data = {}
         var isEdit = false
         var actionUrl = '{{ url('publishers') }}'
         var apiUrl = '{{ url('api/publishers') }}'
+
 
         var columns = [{
                 data: 'DT_RowIndex',
@@ -195,40 +193,33 @@
             {
                 render: function(index, row, data, meta) {
                     return `<Button class="btn btn-warning" onclick="app.editData(event, ${meta.row})">Edit</Button>
-                        <Button class="btn btn-danger" onclick="app.deleteData(event, ${data.id})">Delete</Button>`;
+                            <Button class="btn btn-danger" onclick="app.confirmDelete(event, ${data.id})">Delete</Button>`;
                 },
                 orderable: false,
             },
-        ];
+        ]
 
-        const {
-            createApp,
-            ref
-        } = Vue
-
-        createApp({
-            data() {
-                return {
-                    datas,
-                    data,
-                    isEdit,
-                    actionUrl,
-                    apiUrl,
-                }
+        const app = new Vue({
+            el: '#app',
+            data: {
+                datas,
+                data,
+                isEdit,
+                actionUrl,
+                apiUrl,
             },
-            mounted() {
+            mounted: function() {
                 this.datatable();
             },
             methods: {
                 datatable() {
                     const _this = this;
-                    _this.table = $(document).ready(function() {
-                        $('#table').DataTable({
+                    _this.table = $('#table').DataTable({
                             ajax: {
                                 url: _this.apiUrl,
                                 type: 'GET'
                             },
-                            columns: columns,
+                            columns,
                             columnDefs: [{
                                 defaultContent: "-",
                                 targets: "_all"
@@ -240,10 +231,10 @@
                             "info": true,
                             "autoWidth": false,
                             "responsive": true,
+                        })
+                        .on('xhr', function() {
+                            _this.datas = _this.table.ajax.json().data
                         });
-                    }).on('xhr', function() {
-                        _this.datas = _this.table.ajax.json().data
-                    });
                 },
                 addData() {
                     this.data = {}
@@ -253,36 +244,35 @@
                         });
                     $('#modal-lg').modal()
                 },
-                editData() {
-                    this.data = data
+                editData(event, row) {
+                    this.data = this.datas[row]
                     this.isEdit = true
-                    this.actionUrl = '{{ url('publishers') }}' + '/' + data.id
-                    axios.put(this.actionUrl, this.data, )
-                        .then(response => {
-                            location.reload();
-                        })
-                        .catch(error => {
-                            console.error(error);
-                        });
+                    this.actionUrl = '{{ url('publishers') }}' + '/' + this.data.id;
                     $('#modal-lg').modal()
                 },
-                confirmDelete(id) {
+                confirmDelete(event, id) {
                     this.data = id
                     $('#confirmDeleteModal').modal()
                 },
                 deleteData() {
-                    this.actionUrl = '{{ url('publishers') }}' + '/' + this.data
+                    this.actionUrl = '{{ url('publishers') }}' + '/' + this.data;
                     axios.post(this.actionUrl, {
                             _method: 'DELETE'
                         })
                         .then(response => {
                             location.reload();
                         })
-                        .catch(error => {
-                            console.error(error);
-                        });
+                },
+                submitForm(event, id) {
+                    event.preventDefault();
+                    const _this = this;
+                    var actionUrl = !this.isEdit ? this.actionUrl : this.actionUrl + '/' + id
+                    axios.post(actionUrl, new FormData($($event.target)[0])).then(response => {
+                        $('modal-lg').modal('hide')
+                        _this.table.ajax.reload();
+                    })
                 },
             },
-        }).mount('#app')
+        })
     </script>
 @endsection
