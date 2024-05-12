@@ -24,6 +24,7 @@ Route::resource('members', MemberController::class);
 
 Route::get('/api/publishers', [PublisherController::class, 'api']);
 Route::get('/api/members', [MemberController::class, 'api']);
+Route::get('/api/authors', [AuthorController::class, 'api']);
 
 Route::prefix('dashboard')->middleware('auth')->group(function () {
     Route::get('overview', [DashboardController::class, 'index'])->name('dashboard');

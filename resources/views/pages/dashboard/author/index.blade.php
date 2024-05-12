@@ -40,21 +40,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($authors as $author)
-                                        <tr>
-                                            <td>{{ $loop->iteration }}</td>
-                                            <td>{{ $author->name }}</td>
-                                            <td>{{ $author->email }}</td>
-                                            <td>{{ $author->phone_number }}</td>
-                                            <td>{{ $author->address }}</td>
-                                            <td>
-                                                <Button class="btn btn-warning"
-                                                    @click="editData({{ $author }})">Edit</Button>
-                                                <Button class="btn btn-danger"
-                                                    @click="confirmDelete({{ $author->id }})">Delete</Button>
-                                            </td>
-                                        </tr>
-                                    @endforeach
+
                                 </tbody>
                                 <tfoot>
                                     <tr>
@@ -177,35 +163,95 @@
         var actionUrl = '{{ url('authors') }}'
         var apiUrl = '{{ url('api/authors') }}'
 
+        var columns = [{
+                data: 'DT_RowIndex',
+                class: 'text-center',
+                orderable: false,
+            },
+            {
+                data: 'name',
+                class: 'text-center',
+                orderable: false,
+            },
+            {
+                data: 'email',
+                class: 'text-center',
+                orderable: true,
+            },
+            {
+                data: 'phone_number',
+                class: 'text-center',
+                orderable: true,
+            },
+            {
+                data: 'address',
+                class: 'text-center',
+                orderable: true,
+            },
+            {
+                render: function(index, row, data, meta) {
+                    return `<Button class="btn btn-warning" onclick="app.editData(event, ${meta.row})">Edit</Button>
+                            <Button class="btn btn-danger" onclick="app.confirmDelete(event, ${data.id})">Delete</Button>`;
+                },
+                orderable: false,
+            },
+        ]
+
         const app = new Vue({
             el: '#app',
             data: {
-                datas
+                datas,
                 data,
                 isEdit,
                 actionUrl,
                 apiUrl,
+                columns,
+            },
+            mounted: function() {
+                this.datatable();
             },
             methods: {
+                datatable() {
+                    const _this = this;
+                    _this.table = $('#table').DataTable({
+                            ajax: {
+                                url: _this.apiUrl,
+                                type: 'GET'
+                            },
+                            columns,
+                            columnDefs: [{
+                                defaultContent: "-",
+                                targets: "_all"
+                            }],
+                            "paging": true,
+                            "lengthChange": true,
+                            "searching": true,
+                            "ordering": true,
+                            "info": true,
+                            "autoWidth": false,
+                            "responsive": true,
+                        })
+                        .on('xhr', function() {
+                            _this.datas = _this.table.ajax.json().data
+                            console.log(_this.datas);
+                        })
+                },
                 addData() {
                     this.data = {}
                     this.actionUrl = '{{ url('authors') }}'
                     $('#modal-lg').modal()
                 },
-                editData(data) {
-                    this.data = data
+                editData(event, row) {
+                    this.data = this.datas[row]
                     this.isEdit = true
                     this.actionUrl = '{{ url('authors') }}' + '/' + data.id
                     axios.put(this.actionUrl, this.data, )
                         .then(response => {
                             location.reload();
                         })
-                        .catch(error => {
-                            console.error(error);
-                        });
                     $('#modal-lg').modal()
                 },
-                confirmDelete(id) {
+                confirmDelete(event, row) {
                     this.data = id
                     $('#confirmDeleteModal').modal()
                 },
@@ -217,10 +263,7 @@
                         .then(response => {
                             location.reload();
                         })
-                        .catch(error => {
-                            console.error(error);
-                        });
-                }
+                },
             },
         })
     </script>
