@@ -31,15 +31,6 @@ class BookController extends Controller
 
     public function api()
     {
-        $publishers = Publisher::all();
-        $authors = Author::all();
-        $catalogs = Catalog::all();
-
-        return view('pages.dashboard.book.index', compact('publishers', 'authors', 'catalogs'));
-    }
-
-    public function api()
-    {
         $books = Book::select('*')
             ->join('publishers', 'books.publisher_id', '=', 'publishers.id')
             ->join('authors', 'books.author_id', '=', 'authors.id')
