@@ -12,21 +12,39 @@ use App\Http\Controllers\Controller;
 
 class BookController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
+    {
+        $publishers = Publisher::all();
+        $authors = Author::all();
+        $catalogs = Catalog::all();
+
+        return view('pages.dashboard.book.index', compact('publishers', 'authors', 'catalogs'));
+    }
+
+    public function api()
     {
         $books = Book::select('*')
             ->join('publishers', 'books.publisher_id', '=', 'publishers.id')
             ->join('authors', 'books.author_id', '=', 'authors.id')
             ->join('catalogs', 'books.catalog_id', '=', 'catalogs.id')
             ->select(
+                'books.id as id',
                 'books.isbn as isbn',
                 'books.title as title',
                 'books.year as year',
+                'publishers.id as publisher_id',
                 'publishers.name as publisher',
+                'authors.id as author_id',
                 'authors.name as author',
+                'catalogs.id as catalog_id',
                 'catalogs.name as catalog',
                 'books.qty as qty',
                 'books.price as price',
@@ -34,7 +52,7 @@ class BookController extends Controller
             ->orderBy('books.year')
             ->get();
 
-        return view('pages.dashboard.book.index', compact('books'));
+        return json_encode($books);
     }
 
     /**
@@ -50,7 +68,20 @@ class BookController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->validate([
+            'isbn' => 'required|numeric|unique:books,isbn',
+            'title' => 'required|string|unique:books,title',
+            'year' => 'required|numeric',
+            'publisher_id' => 'required|exists:publishers,id',
+            'author_id' => 'required|exists:authors,id',
+            'catalog_id' => 'required|exists:catalogs,id',
+            'qty' => 'required|numeric',
+            'price' => 'required|numeric',
+        ]);
+
+        Book::create($data);
+
+        return redirect('books');
     }
 
     /**
@@ -74,7 +105,20 @@ class BookController extends Controller
      */
     public function update(Request $request, Book $book)
     {
-        //
+        $data = $request->validate([
+            'isbn' => 'required|numeric',
+            'title' => 'required|string',
+            'year' => 'required|numeric',
+            'publisher_id' => 'required|numeric|exists:publishers,id',
+            'author_id' => 'required|exists:authors,id',
+            'catalog_id' => 'required|exists:catalogs,id',
+            'qty' => 'required|numeric',
+            'price' => 'required|numeric',
+        ]);
+
+        $book->update($data);
+
+        return redirect('books');
     }
 
     /**
@@ -82,6 +126,8 @@ class BookController extends Controller
      */
     public function destroy(Book $book)
     {
-        //
+        $book->delete();
+
+        return redirect('books');
     }
 }

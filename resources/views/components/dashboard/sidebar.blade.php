@@ -74,9 +74,8 @@
                         </p>
                     </a>
                 </li>
-                <li class="nav-item {{ request()->is('dashboard/book') ? 'menu-open' : '' }}">
-                    <a href="{{ route('book.index') }}"
-                        class="nav-link {{ request()->is('dashboard/book') ? 'active' : '' }}">
+                <li class="nav-item {{ request()->is('books') ? 'menu-open' : '' }}">
+                    <a href="{{ url('books') }}" class="nav-link {{ request()->is('books') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-book"></i>
                         <p>
                             Book

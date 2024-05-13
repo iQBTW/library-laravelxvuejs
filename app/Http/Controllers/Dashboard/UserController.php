@@ -10,22 +10,27 @@ use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
         $users = User::select('*')
-                    ->join('members', 'users.member_id', '=', 'members.id')
-                    ->select(
-                        'users.name as name',
-                        'users.email as email',
-                        'users.gender as gender',
-                        'users.address as address',
-                        'members.name as member'
-                    )
-                    ->orderBy('members.name', 'asc')
-                    ->get();
+            ->join('members', 'users.member_id', '=', 'members.id')
+            ->select(
+                'users.name as name',
+                'users.email as email',
+                'users.gender as gender',
+                'users.address as address',
+                'members.name as member'
+            )
+            ->orderBy('members.name', 'asc')
+            ->get();
         $members = Member::get();
 
         return view('pages.dashboard.user.index', compact('users'));
@@ -56,7 +61,7 @@ class UserController extends Controller
             'member_id' => 'required|exists:members,id',
         ]);
 
-        if($request->has('password')){
+        if ($request->has('password')) {
             $data['password'] = Hash::make($data['password']);
         }
 

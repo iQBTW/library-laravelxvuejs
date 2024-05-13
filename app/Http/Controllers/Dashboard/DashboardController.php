@@ -11,12 +11,18 @@ use App\Http\Controllers\Controller;
 
 class DashboardController extends Controller
 {
-    public function index() {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
+    public function index()
+    {
         return view('pages.dashboard.index', [
             'users' => User::count(),
             'books' => Book::count(),
             'publishers' => Publisher::count(),
             'authors' => Author::count(),
         ]);
-     }
+    }
 }
