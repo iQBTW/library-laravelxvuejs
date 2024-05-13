@@ -70,19 +70,6 @@
     <script src={{ asset('dashboard/plugins/datatables-buttons/js/buttons.html5.min.js') }}></script>
     <script src={{ asset('dashboard/plugins/datatables-buttons/js/buttons.print.min.js') }}></script>
     <script src={{ asset('dashboard/plugins/datatables-buttons/js/buttons.colVis.min.js') }}></script>
-    {{-- <script>
-        $(document).ready(function() {
-            $('#table').DataTable({
-                "paging": true,
-                "lengthChange": true,
-                "searching": true,
-                "ordering": true,
-                "info": true,
-                "autoWidth": false,
-                "responsive": true,
-            });
-        });
-    </script> --}}
     @stack('addon-script')
     @yield('js')
 </body>
