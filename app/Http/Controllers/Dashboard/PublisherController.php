@@ -18,13 +18,17 @@ class PublisherController extends Controller
      */
     public function index()
     {
-        $publishers = Publisher::all();
         return view('pages.dashboard.publisher.index');
     }
 
     public function api()
     {
         $publishers = Publisher::all();
+
+        foreach ($publishers as $publisher) {
+            $publisher->date = convertDate($publisher->created_at);
+        }
+
         $datatables = datatables()->of($publishers)->addIndexColumn();
 
         return $datatables->make(true);

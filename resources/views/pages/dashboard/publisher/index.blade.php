@@ -34,25 +34,11 @@
                                         <th>Email</th>
                                         <th>Phone Number</th>
                                         <th>Address</th>
+                                        <th>Created At</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {{-- @foreach ($publishers as $publisher)
-                                        <tr>
-                                            <td>{{ $loop->iteration }}</td>
-                                            <td>{{ $publisher->name }}</td>
-                                            <td>{{ $publisher->email }}</td>
-                                            <td>{{ $publisher->phone_number }}</td>
-                                            <td>{{ $publisher->address }}</td>
-                                            <td>
-                                                <Button class="btn btn-warning"
-                                                    @click="editData({{ $publisher }})">Edit</Button>
-                                                <Button class="btn btn-danger"
-                                                    @click="confirmDelete({{ $publisher->id }})">Delete</Button>
-                                            </td>
-                                        </tr>
-                                    @endforeach --}}
                                 </tbody>
                             </table>
                         </div>
@@ -187,6 +173,11 @@
             },
             {
                 data: 'address',
+                class: 'text-center',
+                orderable: true,
+            },
+            {
+                data: 'date',
                 class: 'text-center',
                 orderable: true,
             },

@@ -20,7 +20,7 @@
 
                         <div class="card-body">
                             <div class="justify-content-end pb-2">
-                                <a href="{{ route('user.create') }}">
+                                <a href="{{ url('users/create') }}">
                                     <button class="btn btn-primary">Add User</button>
                                 </a>
                             </div>
@@ -33,6 +33,7 @@
                                         <th>Gender</th>
                                         <th>Address</th>
                                         <th>Member</th>
+                                        <th>Created At</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -45,6 +46,7 @@
                                             <td>{{ $user->gender }}</td>
                                             <td>{{ $user->address }}</td>
                                             <td>{{ $user->member }}</td>
+                                            <td>{{ convertDate($user->created_at) }}</td>
                                             <td>
                                                 <Button class="btn btn-warning">Edit</Button>
                                                 <Button class="btn btn-danger">Delete</Button>
@@ -52,17 +54,6 @@
                                         </tr>
                                     @endforeach
                                 </tbody>
-                                <tfoot>
-                                    <tr>
-                                        <th>No</th>
-                                        <th>Name</th>
-                                        <th>Email</th>
-                                        <th>Gender</th>
-                                        <th>Address</th>
-                                        <th>Member</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </tfoot>
                             </table>
                         </div>
                     </div>
@@ -70,4 +61,17 @@
             </div>
         </div>
     </section>
+@endsection
+@section('js')
+    <script>
+        $('#table').DataTable({
+            "paging": true,
+            "lengthChange": true,
+            "searching": true,
+            "ordering": true,
+            "info": true,
+            "autoWidth": false,
+            "responsive": true,
+        });
+    </script>
 @endsection

@@ -18,14 +18,17 @@ class AuthorController extends Controller
      */
     public function index()
     {
-        return view('pages.dashboard.author.index', [
-            'authors' => Author::get()
-        ]);
+        return view('pages.dashboard.author.index');
     }
 
     public function api()
     {
         $authors = Author::all();
+
+        foreach ($authors as $author) {
+            $author->date = convertDate($author->created_at);
+        }
+
         $datatables = datatables()->of($authors)->addIndexColumn();
 
         return $datatables->make(true);

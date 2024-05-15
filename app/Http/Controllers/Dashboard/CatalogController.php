@@ -19,7 +19,7 @@ class CatalogController extends Controller
     public function index()
     {
         return view('pages.dashboard.catalog.index', [
-            'catalogs' => Catalog::paginate(10)
+            'catalogs' => Catalog::get()
         ]);
     }
 

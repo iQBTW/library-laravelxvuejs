@@ -31,28 +31,12 @@
                                     <tr>
                                         <th>No</th>
                                         <th>Name</th>
+                                        <th>Created At</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {{-- @foreach ($members as $member)
-                                        <tr>
-                                            <td>{{ $loop->iteration }}</td>
-                                            <td>{{ $member->name }}</td>
-                                            <td>
-                                                <Button class="btn btn-warning">Edit</Button>
-                                                <Button class="btn btn-danger">Delete</Button>
-                                            </td>
-                                        </tr>
-                                    @endforeach --}}
                                 </tbody>
-                                <tfoot>
-                                    <tr>
-                                        <th>No</th>
-                                        <th>Name</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </tfoot>
                             </table>
                         </div>
                     </div>
@@ -134,6 +118,11 @@
             },
             {
                 data: 'name',
+                class: 'text-center',
+                orderable: false,
+            },
+            {
+                data: 'date',
                 class: 'text-center',
                 orderable: false,
             },

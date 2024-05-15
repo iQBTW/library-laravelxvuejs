@@ -27,11 +27,11 @@ class UserController extends Controller
                 'users.email as email',
                 'users.gender as gender',
                 'users.address as address',
-                'members.name as member'
+                'members.name as member',
+                'users.created_at as created_at'
             )
             ->orderBy('members.name', 'asc')
             ->get();
-        $members = Member::get();
 
         return view('pages.dashboard.user.index', compact('users'));
     }
@@ -54,8 +54,8 @@ class UserController extends Controller
         $data = $request->validate([
             'name' => 'required|string|unique:users,name',
             'email' => 'required|email|unique:users,email',
-            'password' => 'required|string|max:62',
-            'gender' => 'required',
+            'password' => 'required|min:8|confirmed',
+            'gender' => 'required|string',
             'phone_number' => 'required|string|max:16',
             'address' => 'required|string',
             'member_id' => 'required|exists:members,id',
@@ -67,7 +67,7 @@ class UserController extends Controller
 
         User::create($data);
 
-        return redirect()->route('user.index');
+        return redirect('users');
     }
 
     /**
@@ -99,6 +99,9 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        //
+        $user = User::findOrFail($user->id);
+        $user->delete();
+
+        return redirect('users');
     }
 }

@@ -22,6 +22,7 @@ Route::resource('authors', AuthorController::class);
 Route::resource('publishers', PublisherController::class);
 Route::resource('members', MemberController::class);
 Route::resource('books', BookController::class);
+Route::resource('users', UserController::class);
 
 Route::get('/api/publishers', [PublisherController::class, 'api']);
 Route::get('/api/members', [MemberController::class, 'api']);
@@ -61,10 +62,10 @@ Route::prefix('dashboard')->middleware('auth')->group(function () {
     //     Route::post('store', [MemberController::class, 'store'])->name('store');
     // });
 
-    Route::prefix('user')->name('user.')->group(function () {
-        Route::get('', [UserController::class, 'index'])->name('index');
-        Route::get('create', [UserController::class, 'create'])->name('create');
-        Route::post('store', [UserController::class, 'store'])->name('store');
-    });
+    // Route::prefix('user')->name('user.')->group(function () {
+    //     Route::get('', [UserController::class, 'index'])->name('index');
+    //     Route::get('create', [UserController::class, 'create'])->name('create');
+    //     Route::post('store', [UserController::class, 'store'])->name('store');
+    // });
 
 });

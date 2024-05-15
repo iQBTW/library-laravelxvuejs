@@ -90,9 +90,8 @@
                         </p>
                     </a>
                 </li>
-                <li class="nav-item {{ request()->is('dashboard/user') ? 'menu-open' : '' }}">
-                    <a href="{{ route('user.index') }}"
-                        class="nav-link {{ request()->is('dashboard/user') ? 'active' : '' }}">
+                <li class="nav-item {{ request()->is('users') ? 'menu-open' : '' }}">
+                    <a href="{{ url('users') }}" class="nav-link {{ request()->is('users') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-user-circle"></i>
                         <p>
                             User

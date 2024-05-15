@@ -48,9 +48,14 @@ class BookController extends Controller
                 'catalogs.name as catalog',
                 'books.qty as qty',
                 'books.price as price',
+                'books.created_at as created_at',
             )
             ->orderBy('books.year')
             ->get();
+
+        foreach ($books as $book) {
+            $book->date = convertDate($book->created_at);
+        }
 
         return json_encode($books);
     }

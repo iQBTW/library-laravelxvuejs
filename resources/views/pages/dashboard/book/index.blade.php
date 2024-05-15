@@ -40,6 +40,7 @@
                     <div class="info-box-content">
                         <span class="info-box-text h3">@{{ book.title }} </span>
                         <span class="info-box-text">Stock: @{{ book.qty }} </span>
+                        <span class="info-box-text bold">Created At: @{{ book.date }}</span>
                         <span class="info-box-number">Rp. @{{ formatNumber(book.price) }},-<small></small></span>
                     </div>
                 </div>
