@@ -9,6 +9,7 @@ use App\Http\Controllers\Dashboard\MemberController;
 use App\Http\Controllers\Dashboard\CatalogController;
 use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Dashboard\PublisherController;
+use App\Http\Controllers\Dashboard\TransactionController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -23,11 +24,13 @@ Route::resource('publishers', PublisherController::class);
 Route::resource('members', MemberController::class);
 Route::resource('books', BookController::class);
 Route::resource('users', UserController::class);
+Route::resource('transactions', TransactionController::class);
 
 Route::get('/api/publishers', [PublisherController::class, 'api']);
 Route::get('/api/members', [MemberController::class, 'api']);
 Route::get('/api/authors', [AuthorController::class, 'api']);
 Route::get('/api/books', [BookController::class, 'api']);
+Route::get('/api/transactions', [TransactionController::class, 'api']);
 
 Route::prefix('dashboard')->middleware('auth')->group(function () {
     Route::get('overview', [DashboardController::class, 'index'])->name('dashboard');

@@ -7,7 +7,6 @@ use App\Models\Author;
 use App\Models\Catalog;
 use App\Models\Publisher;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 
 class BookController extends Controller
