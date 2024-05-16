@@ -38,7 +38,7 @@ class TransactionController extends Controller
                 'transactions.status as status',
                 'transactions.date_start as date_start',
                 'transactions.date_end as date_end',
-
+                'transactions.created_at as created_at',
             )
             ->orderBy('transactions.date_start')
             ->get();
@@ -94,7 +94,6 @@ class TransactionController extends Controller
 
             DB::commit();
             return redirect('transactions')->response()->json(['message' => 'Transaction created successfully'], 201);
-            // return redirect('transactions');
         }
         catch (Exception $e) {
             DB::rollBack();
