@@ -83,6 +83,10 @@ class TransactionController extends Controller
 
             $book = Book::findOrFail($validated['book_id']);
 
+            if ($book->qty < $validated['qty']) {
+                return redirect('transactions')->with('error', 'Jumlah buku yang dipinjam melebihi stok');
+            }
+
             $transactionDetail = new TransactionDetail();
             $transactionDetail->transaction_id = $transaction->id;
             $transactionDetail->book_id = $book->id;
@@ -93,7 +97,7 @@ class TransactionController extends Controller
             $book->save();
 
             DB::commit();
-            return redirect('transactions')->response()->json(['message' => 'Transaction created successfully'], 201);
+            return redirect('transactions');
         }
         catch (Exception $e) {
             DB::rollBack();
