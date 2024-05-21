@@ -48,10 +48,10 @@
                                         <td>{{ $transactionDetail->user_name }}</td>
                                         <td>{{ $transactionDetail->book_title }}</td>
                                         <td>{{ $transactionDetail->qty }}</td>
-                                        <td>{{ $transactionDetail->status }}</td>
-                                        <td>{{ $transactionDetail->date_start }}</td>
-                                        <td>{{ $transactionDetail->date_end }}</td>
-                                        <td>{{ convertDate($transactionDetail->created_at) }}</td>
+                                        <td>{{ upperCase($transactionDetail->status) }}</td>
+                                        <td>{{ convertDate($transactionDetail->date_start) }}</td>
+                                        <td>{{ convertDate($transactionDetail->date_end) }}</td>
+                                        <td>{{ convertDateTime($transactionDetail->created_at) }}</td>
                                         <td>
                                             <Button class="btn btn-warning">Edit</Button>
                                             <Button class="btn btn-danger">Delete</Button>

@@ -34,10 +34,10 @@ class DashboardController extends Controller
             ->orderBy('publisher_id', 'asc')
             ->pluck('total');
 
-        $label_donut = Publisher::orderBy('publishers.id', 'asc')
+        $label_donut = Publisher::orderBy('publishers.name', 'asc')
             ->join('books', 'publishers.id', '=', 'books.publisher_id')
-            ->groupBy('publishers.id')
-            ->pluck('publishers.id');
+            ->groupBy('name')
+            ->pluck('name');
 
         $label_bar = ['Peminjaman'];
         $data_bar = [];

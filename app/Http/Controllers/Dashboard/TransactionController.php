@@ -66,8 +66,8 @@ class TransactionController extends Controller
     {
         $validated = $request->validate([
             'user_id' => 'required|exists:users,id',
-            'date_start' => 'required|numeric',
-            'date_end' => 'required|numeric|after:date_start',
+            'date_start' => 'required|date',
+            'date_end' => 'required|date|after:date_start',
             'book_id' => 'required|exists:books,id',
             'qty' => 'required|numeric|min:1',
         ]);
@@ -98,8 +98,7 @@ class TransactionController extends Controller
 
             DB::commit();
             return redirect('transactions');
-        }
-        catch (Exception $e) {
+        } catch (Exception $e) {
             DB::rollBack();
             return response()->json(['message' => 'Failed to create transaction', 'error' => $e->getMessage()], 500);
         }

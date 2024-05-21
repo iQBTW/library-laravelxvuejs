@@ -41,7 +41,7 @@
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
                                         <td>{{ $catalog->name }}</td>
-                                        <td>{{ convertDate($catalog->created_at) }}</td>
+                                        <td>{{ convertDateTime($catalog->created_at) }}</td>
                                         <td>
                                             <Button class="btn btn-warning">Edit</Button>
                                             <Button class="btn btn-danger">Delete</Button>

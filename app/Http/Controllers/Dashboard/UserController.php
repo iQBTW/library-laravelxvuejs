@@ -91,7 +91,23 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        //
+        $data = $request->validate([
+            'name' => 'required|string',
+            'email' => 'required|email',
+            'password' => 'required|min:8|confirmed',
+            'gender' => 'required|string',
+            'phone_number' => 'required|string|max:16',
+            'address' => 'required|string',
+            'member_id' => 'required|exists:members,id',
+        ]);
+
+        if ($request->has('password')) {
+            $data['password'] = Hash::make($data['password']);
+        }
+
+        $user->update($data);
+
+        return redirect('users');
     }
 
     /**

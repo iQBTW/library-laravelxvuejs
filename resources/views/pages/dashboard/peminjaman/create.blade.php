@@ -26,7 +26,9 @@
                                         <select name="user_id" class="form-control @error('user_id') is-invalid @enderror">
                                             <option value="{{ old('user_id') }}">Nama Peminjam</option>
                                             @foreach ($users as $user)
-                                                <option value="{{ $user->id }}">{{ $user->name }}</option>
+                                                @if ($user->member_id = 3)
+                                                    <option value="{{ $user->id }}">{{ $user->name }}</option>
+                                                @endif
                                             @endforeach
                                         </select>
 
@@ -38,7 +40,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="name">Date Start</label>
-                                        <input type="number" name="date_start"
+                                        <input type="date" name="date_start"
                                             class="form-control @error('date_start') is-invalid @enderror">
 
                                         @error('date_start')
@@ -49,7 +51,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="name">Date End</label>
-                                        <input type="number" name="date_end"
+                                        <input type="date" name="date_end"
                                             class="form-control @error('date_end') is-invalid @enderror">
 
                                         @error('date_end')
