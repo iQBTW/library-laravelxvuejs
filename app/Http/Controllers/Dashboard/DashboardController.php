@@ -55,6 +55,20 @@ class DashboardController extends Controller
             $data_bar[$key]['data'] = $data_month;
         }
 
-        return view('pages.dashboard.index', compact('total_users', 'total_books', 'total_catalogs', 'total_peminjamans', 'total_publishers', 'total_transactions', 'data_donut', 'label_donut'));
+        return view(
+            'pages.dashboard.index',
+            compact(
+                'total_users',
+                'total_books',
+                'total_catalogs',
+                'total_peminjamans',
+                'total_publishers',
+                'total_transactions',
+                'data_donut',
+                'label_donut',
+                'label_bar',
+                'data_bar'
+            )
+        );
     }
 }
