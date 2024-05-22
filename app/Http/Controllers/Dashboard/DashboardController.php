@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Dashboard;
 use App\Models\Book;
 use App\Models\User;
 use App\Models\Author;
+use App\Models\Member;
 use App\Models\Catalog;
 use App\Models\Publisher;
 use App\Models\Transaction;
@@ -40,6 +41,16 @@ class DashboardController extends Controller
             ->groupBy('name')
             ->pluck('name');
 
+        $data_pie = User::select(DB::raw("COUNT(member_id) as total"))
+            ->groupBy('member_id')
+            ->orderBy('member_id', 'asc')
+            ->pluck('total');
+
+        $label_pie = Member::orderBy('members.name', 'asc')
+            ->join('users', 'members.id', '=', 'users.member_id')
+            ->groupby('members.name')
+            ->pluck('members.name');
+
         $label_bar = ['Peminjaman'];
         $data_bar = [];
 
@@ -65,9 +76,11 @@ class DashboardController extends Controller
                 'total_publishers',
                 'total_transactions',
                 'data_donut',
+                'data_pie',
                 'label_donut',
+                'label_pie',
                 'label_bar',
-                'data_bar'
+                'data_bar',
             )
         );
     }
