@@ -244,7 +244,7 @@
                         </div>
                         <div class="card card-danger">
                             <div class="card-header">
-                                <h3 class="card-title">Donut Chart</h3>
+                                <h3 class="card-title">Donut Chart Publisher</h3>
                                 <div class="card-tools">
                                     <button type="button" class="btn btn-tool" data-card-widget="collapse">
                                         <i class="fas fa-minus"></i>
@@ -268,7 +268,12 @@
 @endsection
 @section('js')
     <script>
+        var label_donut = '{!! json_encode($label_donut) !!}'
+        var data_donut = '{!! json_encode($data_donut) !!}'
+
+
         $(function() {
+            //Bar Chart
             var areaChartData = {
                 labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
                 datasets: [{
@@ -315,18 +320,12 @@
                 options: barChartOptions
             })
 
+            //Donut Chart
             var donutChartCanvas = $('#donutChart').get(0).getContext('2d')
             var donutData = {
-                labels: [
-                    'Chrome',
-                    'IE',
-                    'FireFox',
-                    'Safari',
-                    'Opera',
-                    'Navigator',
-                ],
+                labels: JSON.parse(label_donut),
                 datasets: [{
-                    data: [700, 500, 400, 600, 300, 100],
+                    data: JSON.parse(data_donut),
                     backgroundColor: ['#f56954', '#00a65a', '#f39c12', '#00c0ef', '#3c8dbc', '#d2d6de'],
                 }]
             }

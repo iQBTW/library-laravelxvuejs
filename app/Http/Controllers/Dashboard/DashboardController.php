@@ -29,6 +29,7 @@ class DashboardController extends Controller
         $total_peminjamans = Transaction::whereMonth('date_start', date('m'))->count();
         $total_publishers = Publisher::count();
 
+        //Donut Chart
         $data_donut = Book::select(DB::raw("COUNT(publisher_id) as total"))
             ->groupBy('publisher_id')
             ->orderBy('publisher_id', 'asc')
@@ -54,6 +55,6 @@ class DashboardController extends Controller
             $data_bar[$key]['data'] = $data_month;
         }
 
-        return view('pages.dashboard.index', compact('total_users', 'total_books', 'total_catalogs', 'total_peminjamans', 'total_publishers', 'total_transactions'));
+        return view('pages.dashboard.index', compact('total_users', 'total_books', 'total_catalogs', 'total_peminjamans', 'total_publishers', 'total_transactions', 'data_donut', 'label_donut'));
     }
 }
