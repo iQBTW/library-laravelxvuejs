@@ -24,6 +24,33 @@ class TransactionController extends Controller
      */
     public function index()
     {
+        // $transactionDetails = TransactionDetail::select('*')
+        //     ->join('transactions', 'transaction_details.transaction_id', '=', 'transactions.id')
+        //     ->join('books', 'transaction_details.book_id', '=', 'books.id')
+        //     ->join('users', 'transactions.user_id', '=', 'users.id')
+        //     ->select(
+        //         'users.name as user_name',
+        //         'users.id as user_id',
+        //         'transaction_details.id as id',
+        //         'transaction_details.qty as qty',
+        //         'books.id as book_id',
+        //         'books.title as book_title',
+        //         'transactions.status as status',
+        //         'transactions.date_start as date_start',
+        //         'transactions.date_end as date_end',
+        //         'transactions.created_at as created_at',
+        //     )
+        //     ->orderBy('transactions.date_start')
+        //     ->get();
+
+        $users = User::all();
+        $books = Book::all();
+
+        return view('pages.dashboard.peminjaman.index', compact('users', 'books'));
+    }
+
+    public function api()
+    {
         $transactionDetails = TransactionDetail::select('*')
             ->join('transactions', 'transaction_details.transaction_id', '=', 'transactions.id')
             ->join('books', 'transaction_details.book_id', '=', 'books.id')
@@ -43,7 +70,15 @@ class TransactionController extends Controller
             ->orderBy('transactions.date_start')
             ->get();
 
-        return view('pages.dashboard.peminjaman.index', compact('transactionDetails'));
+        foreach ($transactionDetails as $td) {
+            $td->date_start = convertDate($td->date_start);
+            $td->date_end = convertDate($td->date_end);
+            $td->created_at = convertDateTime($td->created_at);
+        }
+
+        $datatables = datatables()->of($transactionDetails)->addIndexColumn();
+
+        return $datatables->make(true);
     }
 
     /**
@@ -51,12 +86,7 @@ class TransactionController extends Controller
      */
     public function create()
     {
-        $users = User::all();
-        $books = Book::all();
 
-        $booksJson = json_encode($books);
-
-        return view('pages.dashboard.peminjaman.create', compact('users', 'books'));
     }
 
     /**
@@ -98,7 +128,8 @@ class TransactionController extends Controller
 
             DB::commit();
             return redirect('transactions');
-        } catch (Exception $e) {
+        }
+        catch (Exception $e) {
             DB::rollBack();
             return response()->json(['message' => 'Failed to create transaction', 'error' => $e->getMessage()], 500);
         }
