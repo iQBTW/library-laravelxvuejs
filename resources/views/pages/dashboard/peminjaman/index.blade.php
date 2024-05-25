@@ -222,7 +222,7 @@
                 orderable: true,
             },
             {
-                data: 'created_at',
+                data: 'createdAt',
                 class: 'text-center',
                 orderable: true,
             },

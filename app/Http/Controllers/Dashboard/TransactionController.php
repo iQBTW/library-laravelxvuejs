@@ -71,9 +71,10 @@ class TransactionController extends Controller
             ->get();
 
         foreach ($transactionDetails as $td) {
+            $td->status = upperCase($td->status);
             $td->date_start = convertDate($td->date_start);
             $td->date_end = convertDate($td->date_end);
-            $td->created_at = convertDateTime($td->created_at);
+            $td->createdAt = convertDateTime($td->created_at);
         }
 
         $datatables = datatables()->of($transactionDetails)->addIndexColumn();
