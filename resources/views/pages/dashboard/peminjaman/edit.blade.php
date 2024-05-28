@@ -1,12 +1,12 @@
 @extends('layouts.dashboard')
 
 @section('title')
-    Create New Peminjaman
+    Edit Peminjaman
 @endsection
 
 @section('breadcrumb')
     <li class="breadcrumb-item active"><a href="{{ route('transactions.index') }}">Peminjaman</a></li>
-    <li class="breadcrumb-item">Create New Peminjaman</li>
+    <li class="breadcrumb-item">Edit Peminjaman</li>
 @endsection
 
 @section('content')
@@ -19,19 +19,19 @@
                         <!-- general form elements -->
                         <div class="card card-primary">
                             <div class="card-header">
-                                <h3 class="card-title">Create New Peminjaman</h3>
+                                <h3 class="card-title">Edit Peminjaman</h3>
                             </div>
                             <!-- /.card-header -->
                             <!-- form start -->
-                            <form method="POST" action="{{ route('transactions.store') }}">
+                            <form method="POST" action="{{ route('transactions.update', $transaction->id) }}">
                                 @csrf
+                                @method('PUT')
                                 <div class="card-body">
                                     <div class="form-group">
                                         <label for="name">Nama Peminjam</label>
                                         <select name="user_id" class="form-control @error('user_id') is-invalid @enderror">
-                                            <option value="{{ old('user_id') }}">Nama Peminjam</option>
                                             @foreach ($users as $user)
-                                                @if ($user->member_id !== 3)
+                                                @if ($user->member_name !== 'Admin' && $user->id == $transaction->user_id ?? old('user_id'))
                                                     <option value="{{ $user->id }}">{{ $user->name }}</option>
                                                 @endif
                                             @endforeach
@@ -47,7 +47,8 @@
                                         <div class="form-group w-50">
                                             <label for="name">Date Start</label>
                                             <input type="date" name="date_start"
-                                                class="form-control @error('date_start') is-invalid @enderror">
+                                                class="form-control @error('date_start') is-invalid @enderror"
+                                                value="{{ $transaction->date_start ?? old('date_start') }}">
 
                                             @error('date_start')
                                                 <span class="invalid-feedback" role="alert">
@@ -61,7 +62,8 @@
                                         <div class="form-group w-50">
                                             <label for="name">Date End</label>
                                             <input type="date" name="date_end"
-                                                class="form-control @error('date_end') is-invalid @enderror">
+                                                class="form-control @error('date_end') is-invalid @enderror"
+                                                value="{{ $transaction->date_end ?? old('date_end') }}">
 
                                             @error('date_end')
                                                 <span class="invalid-feedback" role="alert">
@@ -73,9 +75,8 @@
                                     <div class="form-group">
                                         <label for="book_id">Book</label>
                                         <select name="book_id" class="form-control @error('book_id') is-invalid @enderror">
-                                            <option value="{{ old('book_id') }}">Book</option>
                                             @foreach ($books as $book)
-                                                @if ($book->qty !== 0)
+                                                @if ($book->id == $transaction->book_id ?? old('book_id'))
                                                     <option value="{{ $book->id }}">{{ $book->title }}</option>
                                                 @endif
                                             @endforeach
@@ -89,7 +90,26 @@
                                     <div class="form-group">
                                         <label for="qty">Quantity</label>
                                         <input type="number" name="qty"
-                                            class="form-control @error('qty') is-invalid @enderror" value="1">
+                                            class="form-control @error('qty') is-invalid @enderror"
+                                            value="{{ $transaction->qty }}">
+                                        @error('qty')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="status">Status Peminjaman</label>
+                                        <Select class="form-control" name="status">
+                                            @if ($transaction->status == false)
+                                                <option value="{{ $transaction->status }}">Belum
+                                                    dikembalikan</option>
+                                                <option value="1">Sudah dikembalikan</option>
+                                            @elseif ($transaction->status == true)
+                                                <option value="{{ $transaction->status }}">Sudah dikembalikan</option>
+                                                <option value="0">Belum dikembalikan</option>
+                                            @endif
+                                        </Select>
                                         @error('qty')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>

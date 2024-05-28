@@ -37,7 +37,7 @@
         <div class="row">
             <div class="col-md-3 col-sm-6 col-xs-12" v-for="book in filteredList">
                 <div class="info-box" @click="editData(book)">
-                    <div class="info-box-content">
+                    <div class="info-box-content" role="button">
                         <span class="info-box-text h3">@{{ book.title }} </span>
                         <span class="info-box-text">Stock: @{{ book.qty }} </span>
                         <span class="info-box-text bold">Created At: @{{ book.date }}</span>

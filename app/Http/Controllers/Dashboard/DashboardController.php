@@ -23,6 +23,8 @@ class DashboardController extends Controller
 
     public function index()
     {
+        $transactions = Transaction::all()->pluck('id');
+        // return $transactions;
         $total_users = User::count();
         $total_books = Book::count();
         $total_catalogs = Catalog::count();
@@ -69,6 +71,7 @@ class DashboardController extends Controller
         return view(
             'pages.dashboard.index',
             compact(
+                'transactions',
                 'total_users',
                 'total_books',
                 'total_catalogs',

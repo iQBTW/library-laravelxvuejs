@@ -10,7 +10,11 @@ function convertDate($value)
     return date('d M Y', strtotime($value));
 }
 
-function upperCase($value)
+function is_Returned($value)
 {
-    return ucfirst($value);
+    if ($value == false) {
+        return $value = "Belum dikembalikan";
+    } else if ($value == true) {
+        return $value = "Sudah dikembalikan";
+    }
 }

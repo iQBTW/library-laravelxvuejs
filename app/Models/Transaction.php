@@ -11,6 +11,10 @@ class Transaction extends Model
 
     protected $fillable = ['user_id', 'status', 'date_start', 'date_end'];
 
+    protected $casts = [
+        'status' => 'boolean'
+    ];
+
     public function users()
     {
         return $this->belongsTo(User::class);
