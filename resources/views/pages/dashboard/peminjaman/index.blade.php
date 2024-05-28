@@ -31,19 +31,14 @@
                                 </div>
                                 <div class="d-flex">
                                     <div class="form-group px-2">
-                                        <select class="select2 form-control filter-select" id="filter-status"
-                                            style="width: 100%;">
+                                        <select class="select2 form-control filter-select" name="status" id="filter-status" v-model="filterStatus" style="width: 100%;" @change="datatable">
                                             <option value="" selected>Filter Status</option>
-                                            <option value="1">Sudah dikembalikan</option>
-                                            <option value="0">Belum dikembalikan</option>
-
+                                            <option value="true">Sudah dikembalikan</option>
+                                            <option value="false">Belum dikembalikan</option>
                                         </select>
                                     </div>
                                     <div class="form-group px-2">
-                                        <select class="select2 form-control" style="width: 100%;">
-                                            <option selected>Filter Tanggal Pinjam</option>
-                                            <option>Date</option>
-                                        </select>
+                                        <input type="text" class="form-control filter-input-date" id="filter-date" onfocus="(this.type='date')" onblur="(this.type='text')" placeholder="Filter Date">
                                     </div>
                                 </div>
                             </div>
@@ -110,59 +105,9 @@
         var datas = []
         var data = {}
         var isEdit = false
-        var isReturned = $('#filter-status').val();
+        var filterStatus = ''
         var actionUrl = '{{ url('transactions') }}'
         var apiUrl = '{{ url('api/transactions') }}'
-
-        var columns = [{
-                data: 'DT_RowIndex',
-                class: 'text-center',
-                orderable: false,
-            },
-            {
-                data: 'user_name',
-                class: 'text-center',
-                orderable: true,
-            },
-            {
-                data: 'book_title',
-                class: 'text-center',
-                orderable: true,
-            },
-            {
-                data: 'qty',
-                class: 'text-center',
-                orderable: true,
-            },
-            {
-                data: 'isReturned',
-                class: 'text-center',
-                orderable: true,
-            },
-            {
-                data: 'date_start',
-                class: 'text-center',
-                orderable: true,
-            },
-            {
-                data: 'date_end',
-                class: 'text-center',
-                orderable: true,
-            },
-            {
-                data: 'createdAt',
-                class: 'text-center',
-                orderable: true,
-            },
-            {
-                render: function(index, row, data, meta) {
-                    return `<Button class="btn btn-warning" onclick="app.goToEditPage(event, ${meta.row})   ">Edit</Button>
-                            <Button class="btn btn-info" onclick="app.goToShowPage(event, ${meta.row})">Detail</Button>
-                            <Button class="btn btn-danger" onclick="app.confirmDelete(event, ${data.id})">Delete</Button>`;
-                },
-                orderable: false,
-            },
-        ]
 
         const app = new Vue({
             el: '#app',
@@ -170,10 +115,9 @@
                 datas,
                 data,
                 isEdit,
+                filterStatus,
                 actionUrl,
                 apiUrl,
-                isReturned,
-                columns,
             },
             mounted: function() {
                 this.datatable();
@@ -185,12 +129,65 @@
                             ajax: {
                                 url: _this.apiUrl,
                                 type: 'GET'
+                                data: function(d) {
+                                    d['filter-status'] = _this.filterStatus
+                                },
                             },
-                            columns,
+                            columns: [
+                                {
+                                    data: 'DT_RowIndex',
+                                    class: 'text-center',
+                                    orderable: false,
+                                },
+                                {
+                                    data: 'user_name',
+                                    class: 'text-center',
+                                    orderable: true,
+                                },
+                                {
+                                    data: 'book_title',
+                                    class: 'text-center',
+                                    orderable: true,
+                                },
+                                {
+                                    data: 'qty',
+                                    class: 'text-center',
+                                    orderable: true,
+                                },
+                                {
+                                    data: 'isReturned',
+                                    class: 'text-center',
+                                    orderable: true,
+                                },
+                                {
+                                    data: 'date_start',
+                                    class: 'text-center',
+                                    orderable: true,
+                                },
+                                {
+                                    data: 'date_end',
+                                    class: 'text-center',
+                                    orderable: true,
+                                },
+                                {
+                                    data: 'createdAt',
+                                    class: 'text-center',
+                                    orderable: true,
+                                },
+                                {
+                                    render: function(data, type, row, meta) {
+                                        return `<Button class="btn btn-warning" onclick="app.goToEditPage(event, ${meta.row})">Edit</Button>
+                                                <Button class="btn btn-info" onclick="app.goToShowPage(event, ${meta.row})">Detail</Button>
+                                                <Button class="btn btn-danger" onclick="app.confirmDelete(event, ${meta.id})">Delete</Button>`;
+                                    },
+                                    orderable: false,
+                                },
+                            ],
                             columnDefs: [{
                                 defaultContent: "-",
-                                targets: "_all"
+                                targets: "_all",
                             }],
+                            "serverSide": true,
                             "paging": true,
                             "lengthChange": true,
                             "searching": true,
@@ -203,9 +200,12 @@
                             _this.datas = _this.table.ajax.json().data
                         })
                     $('.filter-select').change(function() {
-                        _this.isReturned = $('#filter-status').val();
-                        console.log(_this.isReturned);
-                        _this.table.columns(5).search(_this.isReturned).draw();
+                        let isReturned = $('#filter-status').val()
+                        _this.table.data(5).search(isReturned).draw();
+                    })
+                    $('.filter-input-date').change(function() {
+                        let dateStart = $('#filter-date').val()
+                        _this.table.data(6).search(dateStart).draw();
                     });
                 },
                 goToEditPage(event, row) {
@@ -235,17 +235,6 @@
                     this.filter.datas
                 }
             },
-            computed: {
-                filteredByStatus() {
-                    if (this.filter.statusTrue) {
-                        return this.datas.filter(data => data.isReturned === true);
-                    } else if (this.filter.statusFalse) {
-                        return this.datas.filter(data => data.isReturned === false);
-                    } else {
-                        return
-                    }
-                }
-            }
         })
     </script>
 @endsection

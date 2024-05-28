@@ -11,6 +11,7 @@ use App\Enums\TransactionStatus;
 use App\Models\TransactionDetail;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Yajra\DataTables\DataTables;
 
 class TransactionController extends Controller
 {
@@ -49,6 +50,8 @@ class TransactionController extends Controller
 
     public function api(Request $request)
     {
+        $filterStatus = $request->input('filter-status');
+
         $transactions = Transaction::with('transactionDetails')
             ->join('transaction_details', 'transactions.id', '=', 'transaction_details.transaction_id')
             ->join('users', 'transactions.user_id', '=', 'users.id')
@@ -65,8 +68,13 @@ class TransactionController extends Controller
                 'transactions.date_start as date_start',
                 'transactions.date_end as date_end',
                 'transactions.created_at as created_at',
-            )
-            ->get();
+            );
+
+        if (!is_null($filterStatus)) {
+            $transactions->where('transactions.status', filter_var($filterStatus, FILTER_VALIDATE_BOOLEAN));
+        }
+
+        $transactions = $transactions->get();
 
         foreach ($transactions as $datas) {
             $datas->isReturned = is_Returned($datas->status);
@@ -75,11 +83,7 @@ class TransactionController extends Controller
             $datas->createdAt = convertDateTime($datas->created_at);
         }
 
-        if ($request->input('isReturned')) {
-            $transactions = $transactions->where('isReturned', $request->input('isReturned'));
-        }
-
-        $datatables = datatables()->of($transactions)->addIndexColumn();
+        $datatables = DataTables()->of($transactions)->addIndexColumn();
 
         return $datatables->make(true);
     }

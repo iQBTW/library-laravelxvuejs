@@ -50,7 +50,7 @@
                 </li>
                 <li class="nav-item {{ request()->is('transactions') ? 'menu-open' : '' }}">
                     <a href="{{ url('transactions') }}"
-                        class="nav-link {{ (((request()->is('transactions') ? 'active' : request()->is('transactions/create')) ? 'active' : request()->is('transactions/' . $transactions->id . '/edit')) ? 'active' : request()->is('transactions/' . $transactions->id)) ? 'active' : '' }}">
+                        class="nav-link {{ request()->is('transactions') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-calendar-plus"></i>
                         <p>
                             Peminjaman
