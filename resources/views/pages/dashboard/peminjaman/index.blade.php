@@ -33,8 +33,8 @@
                                     <div class="form-group px-2">
                                         <select class="select2 form-control filter-select" name="status" id="filter-status" v-model="filterStatus" style="width: 100%;" @change="datatable">
                                             <option value="" selected>Filter Status</option>
-                                            <option value="true">Sudah dikembalikan</option>
-                                            <option value="false">Belum dikembalikan</option>
+                                            <option value="Sudah dikembalikan">Sudah dikembalikan</option>
+                                            <option value="Belum dikembalikan">Belum dikembalikan</option>
                                         </select>
                                     </div>
                                     <div class="form-group px-2">
@@ -129,9 +129,6 @@
                             ajax: {
                                 url: _this.apiUrl,
                                 type: 'GET'
-                                data: function(d) {
-                                    d['filter-status'] = _this.filterStatus
-                                },
                             },
                             columns: [
                                 {
@@ -140,12 +137,12 @@
                                     orderable: false,
                                 },
                                 {
-                                    data: 'user_name',
+                                    data: 'user',
                                     class: 'text-center',
                                     orderable: true,
                                 },
                                 {
-                                    data: 'book_title',
+                                    data: 'book',
                                     class: 'text-center',
                                     orderable: true,
                                 },
@@ -155,7 +152,7 @@
                                     orderable: true,
                                 },
                                 {
-                                    data: 'isReturned',
+                                    data: 'status',
                                     class: 'text-center',
                                     orderable: true,
                                 },
@@ -170,24 +167,22 @@
                                     orderable: true,
                                 },
                                 {
-                                    data: 'createdAt',
+                                    data: 'created_at',
                                     class: 'text-center',
                                     orderable: true,
                                 },
                                 {
-                                    render: function(data, type, row, meta) {
-                                        return `<Button class="btn btn-warning" onclick="app.goToEditPage(event, ${meta.row})">Edit</Button>
-                                                <Button class="btn btn-info" onclick="app.goToShowPage(event, ${meta.row})">Detail</Button>
-                                                <Button class="btn btn-danger" onclick="app.confirmDelete(event, ${meta.id})">Delete</Button>`;
-                                    },
-                                    orderable: false,
+                                    data: 'action',
+                                    class: 'text-center',
+                                    orderable: true,
                                 },
+
                             ],
                             columnDefs: [{
                                 defaultContent: "-",
-                                targets: "_all",
+                                targets: 0,
                             }],
-                            "serverSide": true,
+                            // "serverSide": true,
                             "paging": true,
                             "lengthChange": true,
                             "searching": true,
@@ -207,20 +202,6 @@
                         let dateStart = $('#filter-date').val()
                         _this.table.data(6).search(dateStart).draw();
                     });
-                },
-                goToEditPage(event, row) {
-                    this.data = this.datas[row]
-                    this.actionUrl = '{{ url('transactions') }}' + '/' + this.data.id + '/edit'
-                    window.location = this.actionUrl
-                },
-                goToShowPage(event, row) {
-                    this.data = this.datas[row]
-                    this.actionUrl = '{{ url('transactions') }}' + '/' + this.data.id
-                    window.location = this.actionUrl
-                },
-                confirmDelete(event, row) {
-                    this.data = id
-                    $('#confirmDeleteModal').modal()
                 },
                 deleteData() {
                     this.actionUrl = '{{ url('transactions') }}' + '/' + this.data

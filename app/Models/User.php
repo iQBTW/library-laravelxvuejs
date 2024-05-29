@@ -11,11 +11,13 @@ class User extends Authenticatable
 {
     use HasFactory, Notifiable;
 
-    public function members() {
+    public function members()
+    {
         return $this->belongsTo(Member::class);
     }
 
-    public function transactions() {
+    public function transactions()
+    {
         return $this->hasMany(Transaction::class);
     }
 

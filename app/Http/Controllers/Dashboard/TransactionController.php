@@ -11,7 +11,6 @@ use App\Enums\TransactionStatus;
 use App\Models\TransactionDetail;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use Yajra\DataTables\DataTables;
 
 class TransactionController extends Controller
 {
@@ -50,9 +49,7 @@ class TransactionController extends Controller
 
     public function api(Request $request)
     {
-        $filterStatus = $request->input('filter-status');
-
-        $transactions = Transaction::with('transactionDetails')
+        $transactions = Transaction::with('users')
             ->join('transaction_details', 'transactions.id', '=', 'transaction_details.transaction_id')
             ->join('users', 'transactions.user_id', '=', 'users.id')
             ->join('books', 'transaction_details.book_id', '=', 'books.id')
@@ -61,79 +58,50 @@ class TransactionController extends Controller
                 'transaction_details.id as transaction_details_id',
                 'users.id as user_id',
                 'books.id as book_id',
-                'users.name as user_name',
+                'users.name as user',
                 'transaction_details.qty as qty',
-                'books.title as book_title',
+                'books.title as book',
                 'transactions.status as status',
                 'transactions.date_start as date_start',
                 'transactions.date_end as date_end',
                 'transactions.created_at as created_at',
-            );
+            )
+            ->latest();
 
-        if (!is_null($filterStatus)) {
-            $transactions->where('transactions.status', filter_var($filterStatus, FILTER_VALIDATE_BOOLEAN));
-        }
-
-        $transactions = $transactions->get();
-
-        foreach ($transactions as $datas) {
-            $datas->isReturned = is_Returned($datas->status);
-            $datas->date_start = convertDate($datas->date_start);
-            $datas->date_end = convertDate($datas->date_end);
-            $datas->createdAt = convertDateTime($datas->created_at);
-        }
-
-        $datatables = DataTables()->of($transactions)->addIndexColumn();
+        $datatables = datatables()->of($transactions)
+            ->filterColumn('status', function ($query, $keyword) {
+                if ($keyword == 'Sudah dikembalikan') {
+                    $query->where('status', 1);
+                }
+                if ($keyword == 'Belum dikembalikan') {
+                    $query->where('status', 0);
+                }
+            })
+            ->editColumn('status', function ($data) {
+                $status = is_Returned($data->status);
+                return $status;
+            })
+            ->editColumn('date_start', function ($data) {
+                $formatedDateStart = convertDate($data->date_start);
+                return $formatedDateStart;
+            })
+            ->editColumn('date_end', function ($data) {
+                $formatedDate = convertDate($data->date_end);
+                return $formatedDate;
+            })
+            ->editColumn('created_at', function ($data) {
+                $formatedDate = convertDate($data->created_at);
+                return $formatedDate;
+            })
+            ->addColumn('action', function ($data) {
+                return '<a href="/transactions/' . $data->id . '/edit" class="btn btn-warning btn-sm"><i class="fa fa-edit"></i> Edit</a>
+                <a href="/transactions/' . $data->id . '" class="btn btn-info btn-sm"><i class="fa fa-edit"></i> Detail</a>
+                <a href="/transactions/' . $data->id . '/delete" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i> Delete</a>';
+            })
+            ->rawColumns(['action'])
+            ->addIndexColumn();
 
         return $datatables->make(true);
-    }
-
-    public function filterByStatus(Request $request)
-    {
-        $getStatus = $request->get('status');
-        $transactions = Transaction::all();
-
-        if ($getStatus == true) {
-            $transactions = Transaction::with('transactionDetails')
-                ->join('transaction_details', 'transactions.id', '=', 'transaction_details.transaction_id')
-                ->join('users', 'transactions.user_id', '=', 'users.id')
-                ->join('books', 'transaction_details.book_id', '=', 'books.id')
-                ->select(
-                    'transactions.id as id',
-                    'transaction_details.id as transaction_details_id',
-                    'users.id as user_id',
-                    'books.id as book_id',
-                    'users.name as user_name',
-                    'transaction_details.qty as qty',
-                    'books.title as book_title',
-                    'transactions.status as status',
-                    'transactions.date_start as date_start',
-                    'transactions.date_end as date_end',
-                    'transactions.created_at as created_at',
-                )
-                ->get('status' == true);
-        } else if ($getStatus == false) {
-            $transactions = Transaction::with('transactionDetails')
-                ->join('transaction_details', 'transactions.id', '=', 'transaction_details.transaction_id')
-                ->join('users', 'transactions.user_id', '=', 'users.id')
-                ->join('books', 'transaction_details.book_id', '=', 'books.id')
-                ->select(
-                    'transactions.id as id',
-                    'transaction_details.id as transaction_details_id',
-                    'users.id as user_id',
-                    'books.id as book_id',
-                    'users.name as user_name',
-                    'transaction_details.qty as qty',
-                    'books.title as book_title',
-                    'transactions.status as status',
-                    'transactions.date_start as date_start',
-                    'transactions.date_end as date_end',
-                    'transactions.created_at as created_at',
-                )
-                ->get('status' == false);
-        }
-
-        return json_encode($transactions);
     }
 
     /**
