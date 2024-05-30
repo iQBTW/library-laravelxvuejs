@@ -24,27 +24,11 @@ class TransactionController extends Controller
      */
     public function index()
     {
-        $transactions = Transaction::with('transactionDetails')
-            ->join('transaction_details', 'transactions.id', '=', 'transaction_details.transaction_id')
-            ->join('users', 'transactions.user_id', '=', 'users.id')
-            ->join('books', 'transaction_details.book_id', '=', 'books.id')
-            ->select(
-                'transactions.id as id',
-                'transaction_details.id as transaction_details_id',
-                'users.id as user_id',
-                'books.id as book_id',
-                'users.name as user_name',
-                'transaction_details.qty as qty',
-                'books.title as book_title',
-                'transactions.status as status',
-                'transactions.date_start as date_start',
-                'transactions.date_end as date_end',
-                'transactions.created_at as created_at',
-            )
-            ->get();
+        $transactionsToArr = Transaction::all()->toArray();
+        $dueTransactions = checkDueTransactions($transactionsToArr);
 
 
-        return view('pages.dashboard.peminjaman.index', compact('transactions'));
+        return view('pages.dashboard.peminjaman.index', compact('dueTransactions'));
     }
 
     public function api(Request $request)
@@ -109,11 +93,13 @@ class TransactionController extends Controller
      */
     public function create()
     {
+        $transactionsToArr = Transaction::all()->toArray();
+        $dueTransactions = checkDueTransactions($transactionsToArr);
 
         $users = User::all();
         $books = Book::all();
 
-        return view('pages.dashboard.peminjaman.create', compact('users', 'books'));
+        return view('pages.dashboard.peminjaman.create', compact('users', 'books', 'dueTransactions'));
     }
 
 
@@ -125,7 +111,7 @@ class TransactionController extends Controller
         $validated = $request->validate([
             'user_id' => 'required|exists:users,id',
             'date_start' => 'required|date',
-            'date_end' => 'required|date|after:date_start',
+            'date_end' => 'required|date',
             'book_id' => 'required|exists:books,id',
             'qty' => 'required|numeric|min:1',
         ]);
@@ -156,7 +142,8 @@ class TransactionController extends Controller
 
             DB::commit();
             return redirect('transactions');
-        } catch (Exception $e) {
+        }
+        catch (Exception $e) {
             DB::rollBack();
             return response()->json(['message' => 'Failed to create transaction', 'error' => $e->getMessage()], 500);
         }
@@ -242,7 +229,8 @@ class TransactionController extends Controller
                 $book = Book::findOrFail($data['book_id']);
                 $book->qty += $data['qty'];
                 $book->save();
-            } elseif ($data['status'] == false) {
+            }
+            elseif ($data['status'] == false) {
                 $book = Book::findOrFail($data['book_id']);
                 $book->qty -= $data['qty'];
                 $book->save();
@@ -251,7 +239,8 @@ class TransactionController extends Controller
             $transaction->update($data);
             DB::commit();
             return redirect('transactions');
-        } catch (Exception $e) {
+        }
+        catch (Exception $e) {
             DB::rollBack();
             return response()->json(['message' => 'Failed to create transaction', 'error' => $e->getMessage()], 500);
         }

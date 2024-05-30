@@ -3,8 +3,9 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Models\Author;
-use App\Http\Controllers\Controller;
+use App\Models\Transaction;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class AuthorController extends Controller
 {
@@ -18,7 +19,10 @@ class AuthorController extends Controller
      */
     public function index()
     {
-        return view('pages.dashboard.author.index');
+        $transactionsToArr = Transaction::with('users')->get()->toArray();
+        $dueTransactions = checkDueTransactions($transactionsToArr);
+
+        return view('pages.dashboard.author.index', compact('dueTransactions'));
     }
 
     public function api()

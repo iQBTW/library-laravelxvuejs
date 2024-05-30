@@ -6,6 +6,7 @@ use App\Models\Book;
 use App\Models\Author;
 use App\Models\Catalog;
 use App\Models\Publisher;
+use App\Models\Transaction;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -25,7 +26,10 @@ class BookController extends Controller
         $authors = Author::all();
         $catalogs = Catalog::all();
 
-        return view('pages.dashboard.book.index', compact('publishers', 'authors', 'catalogs'));
+        $transactionsToArr = Transaction::with('users')->get()->toArray();
+        $dueTransactions = checkDueTransactions($transactionsToArr);
+
+        return view('pages.dashboard.book.index', compact('publishers', 'authors', 'catalogs', 'dueTransactions'));
     }
 
     public function api()

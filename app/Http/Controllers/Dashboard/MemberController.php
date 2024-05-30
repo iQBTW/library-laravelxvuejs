@@ -3,8 +3,9 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Models\Member;
-use App\Http\Controllers\Controller;
+use App\Models\Transaction;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class MemberController extends Controller
 {
@@ -18,7 +19,10 @@ class MemberController extends Controller
      */
     public function index()
     {
-        return view('pages.dashboard.member.index');
+        $transactionsToArr = Transaction::with('users')->get()->toArray();
+        $dueTransactions = checkDueTransactions($transactionsToArr);
+
+        return view('pages.dashboard.member.index', compact('dueTransactions'));
     }
 
     public function api()

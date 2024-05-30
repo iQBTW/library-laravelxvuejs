@@ -7,6 +7,7 @@ use App\Models\Member;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
+use App\Models\Transaction;
 
 class UserController extends Controller
 {
@@ -33,7 +34,10 @@ class UserController extends Controller
             ->orderBy('members.name', 'asc')
             ->get();
 
-        return view('pages.dashboard.user.index', compact('users'));
+        $transactionsToArr = Transaction::with('users')->get()->toArray();
+        $dueTransactions = checkDueTransactions($transactionsToArr);
+
+        return view('pages.dashboard.user.index', compact('users', 'dueTransactions'));
     }
 
     /**
@@ -43,7 +47,10 @@ class UserController extends Controller
     {
         $members = Member::get();
 
-        return view('pages.dashboard.user.create', compact('members'));
+        $transactionsToArr = Transaction::with('users')->get()->toArray();
+        $dueTransactions = checkDueTransactions($transactionsToArr);
+
+        return view('pages.dashboard.user.create', compact('members', 'dueTransactions'));
     }
 
     /**

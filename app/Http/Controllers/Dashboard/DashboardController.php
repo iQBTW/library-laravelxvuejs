@@ -24,14 +24,16 @@ class DashboardController extends Controller
     public function index()
     {
         $transactions = Transaction::all()->pluck('id');
-        // return $transactions;
         $total_users = User::count();
         $total_books = Book::count();
         $total_catalogs = Catalog::count();
         $total_transactions = Transaction::count();
         $total_peminjamans = Transaction::whereMonth('date_start', date('m'))->count();
         $total_publishers = Publisher::count();
+        $transactionsToArr = Transaction::with('users')->get()->toArray();
+        $dueTransactions = checkDueTransactions($transactionsToArr);
 
+        // dd($dueTransactions);
         //Donut Chart
         $data_donut = Book::select(DB::raw("COUNT(publisher_id) as total"))
             ->groupBy('publisher_id')
@@ -71,6 +73,7 @@ class DashboardController extends Controller
         return view(
             'pages.dashboard.index',
             compact(
+                'dueTransactions',
                 'transactions',
                 'total_users',
                 'total_books',

@@ -3,8 +3,9 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Models\Publisher;
-use App\Http\Controllers\Controller;
+use App\Models\Transaction;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class PublisherController extends Controller
 {
@@ -18,7 +19,10 @@ class PublisherController extends Controller
      */
     public function index()
     {
-        return view('pages.dashboard.publisher.index');
+        $transactionsToArr = Transaction::with('users')->get()->toArray();
+        $dueTransactions = checkDueTransactions($transactionsToArr);
+
+        return view('pages.dashboard.publisher.index', compact('dueTransactions'));
     }
 
     public function api()

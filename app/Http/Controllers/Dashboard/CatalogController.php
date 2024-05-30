@@ -3,8 +3,9 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Models\Catalog;
-use App\Http\Controllers\Controller;
+use App\Models\Transaction;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class CatalogController extends Controller
 {
@@ -18,9 +19,12 @@ class CatalogController extends Controller
      */
     public function index()
     {
-        return view('pages.dashboard.catalog.index', [
-            'catalogs' => Catalog::get()
-        ]);
+        $catalogs = Catalog::get();
+
+        $transactionsToArr = Transaction::with('users')->get()->toArray();
+        $dueTransactions = checkDueTransactions($transactionsToArr);
+
+        return view('pages.dashboard.catalog.index', compact('catalogs', 'dueTransactions'));
     }
 
     /**
@@ -28,7 +32,10 @@ class CatalogController extends Controller
      */
     public function create()
     {
-        return view('pages.dashboard.catalog.create');
+        $transactionsToArr = Transaction::with('users')->get()->toArray();
+        $dueTransactions = checkDueTransactions($transactionsToArr);
+
+        return view('pages.dashboard.catalog.create', compact('dueTransactions'));
     }
 
     /**
