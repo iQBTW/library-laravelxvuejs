@@ -21,23 +21,28 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::select('*')
-            ->join('members', 'users.member_id', '=', 'members.id')
-            ->select(
-                'users.name as name',
-                'users.email as email',
-                'users.gender as gender',
-                'users.address as address',
-                'members.name as member',
-                'users.created_at as created_at'
-            )
-            ->orderBy('members.name', 'asc')
-            ->get();
+        if (auth()->user()->role('Admin')) {
+            $users = User::select('*')
+                ->join('members', 'users.member_id', '=', 'members.id')
+                ->select(
+                    'users.name as name',
+                    'users.email as email',
+                    'users.gender as gender',
+                    'users.address as address',
+                    'members.name as member',
+                    'users.created_at as created_at'
+                )
+                ->orderBy('members.name', 'asc')
+                ->get();
 
-        $transactionsToArr = Transaction::with('users')->get()->toArray();
-        $dueTransactions = checkDueTransactions($transactionsToArr);
+            $transactionsToArr = Transaction::with('users')->get()->toArray();
+            $dueTransactions = checkDueTransactions($transactionsToArr);
 
-        return view('pages.dashboard.user.index', compact('users', 'dueTransactions'));
+            return view('pages.dashboard.user.index', compact('users', 'dueTransactions'));
+        }
+        else {
+            return abort(403);
+        }
     }
 
     /**

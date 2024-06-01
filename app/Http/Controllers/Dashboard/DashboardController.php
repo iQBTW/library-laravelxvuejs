@@ -12,7 +12,9 @@ use App\Models\Transaction;
 use Illuminate\Http\Request;
 use App\Models\TransactionDetail;
 use Illuminate\Support\Facades\DB;
+use Spatie\Permission\Models\Role;
 use App\Http\Controllers\Controller;
+use Spatie\Permission\Models\Permission;
 
 class DashboardController extends Controller
 {
@@ -90,4 +92,25 @@ class DashboardController extends Controller
             )
         );
     }
+
+    public function test_spatie()
+    {
+        // $role = Role::create(
+        //     ['name' => 'Admin']
+        // );
+        // $permission = Permission::create(
+        //     ['name' => 'Access Peminjaman']
+        // );
+
+        // $role->givePermissionTo($permission);
+        // $permission->assignRole($role);
+
+        // $user = auth()->user();
+        // $user->assignRole('Admin');
+        // return $user;
+
+        // $user = User::with('roles')->get();
+        // return $user;
+    }
 }
+

@@ -34,6 +34,7 @@ Route::get('/api/transactions', [TransactionController::class, 'api']);
 
 Route::prefix('dashboard')->middleware('auth')->group(function () {
     Route::get('overview', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('testspatie', [DashboardController::class, 'test_spatie'])->name('testspatie');
 
     Route::prefix('catalog')->name('catalog.')->group(function () {
         Route::get('', [CatalogController::class, 'index'])->name('index');

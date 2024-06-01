@@ -24,11 +24,16 @@ class TransactionController extends Controller
      */
     public function index()
     {
-        $transactionsToArr = Transaction::all()->toArray();
-        $dueTransactions = checkDueTransactions($transactionsToArr);
+        if (auth()->user()->role('Admin')) {
+            $transactionsToArr = Transaction::all()->toArray();
+            $dueTransactions = checkDueTransactions($transactionsToArr);
 
+            return view('pages.dashboard.peminjaman.index', compact('dueTransactions'));
+        }
+        else {
+            return abort(403);
+        }
 
-        return view('pages.dashboard.peminjaman.index', compact('dueTransactions'));
     }
 
     public function api(Request $request)

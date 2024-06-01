@@ -17,7 +17,7 @@ class MemberFactory extends Factory
      */
     public function definition(): array
     {
-        $members = ['Admin', 'Gold', 'Silver', 'Bronze'];
+        $members = ['Gold', 'Silver', 'Bronze'];
         return [
             'name' => $this->faker->unique()->randomElement($members),
         ];
