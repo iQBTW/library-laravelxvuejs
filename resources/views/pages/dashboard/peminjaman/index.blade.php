@@ -13,56 +13,56 @@
 @endsection
 
 @section('content')
-    @can('Access Peminjaman')
-        <div id="app">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-12">
-                        <div class="card">
-                            <div class="card-header">
-                                <h3 class="card-title">List of Transactions</h3>
-                            </div>
+    {{-- @can('Access Peminjaman') --}}
+    <div id="app">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">List of Transactions</h3>
+                        </div>
 
-                            <div class="card-body">
-                                <div class="d-flex justify-content-between items-center pb-2">
-                                    <div class="form-group">
-                                        <a href="{{ route('transactions.create') }}" class="btn btn-primary">
-                                            Create New Peminjaman
-                                        </a>
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between items-center pb-2">
+                                <div class="form-group">
+                                    <a href="{{ route('transactions.create') }}" class="btn btn-primary">
+                                        Create New Peminjaman
+                                    </a>
+                                </div>
+                                <div class="d-flex">
+                                    <div class="form-group px-2">
+                                        <select class="select2 form-control filter-select" name="status" id="filter-status"
+                                            v-model="filterStatus" style="width: 100%;" @change="datatable">
+                                            <option value="" selected>Filter Status</option>
+                                            <option value="1">Sudah dikembalikan</option>
+                                            <option value="0">Belum dikembalikan</option>
+                                        </select>
                                     </div>
-                                    <div class="d-flex">
-                                        <div class="form-group px-2">
-                                            <select class="select2 form-control filter-select" name="status" id="filter-status"
-                                                v-model="filterStatus" style="width: 100%;" @change="datatable">
-                                                <option value="" selected>Filter Status</option>
-                                                <option value="Sudah dikembalikan">Sudah dikembalikan</option>
-                                                <option value="Belum dikembalikan">Belum dikembalikan</option>
-                                            </select>
-                                        </div>
-                                        <div class="form-group px-2">
-                                            <input type="text" class="form-control filter-input-date" id="filter-date"
-                                                onfocus="(this.type='date')" onblur="(this.type='text')"
-                                                placeholder="Filter Date">
-                                        </div>
+                                    <div class="form-group px-2">
+                                        <input type="text" class="form-control filter-input-date" name="datestart"
+                                            id="filter-date" onfocus="(this.type='date')" onblur="(this.type='text')"
+                                            placeholder="Filter Date">
                                     </div>
                                 </div>
                             </div>
-                            <table id="table" class="table-bordered table-hover table">
-                                <thead>
-                                    <tr>
-                                        <th>No</th>
-                                        <th>Nama Peminjam</th>
-                                        <th>Book Title</th>
-                                        <th>Quantity</th>
-                                        <th>Status</th>
-                                        <th>Date Start</th>
-                                        <th>Date End</th>
-                                        <th>Created At</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {{-- @foreach ($transactions as $transaction)
+                        </div>
+                        <table id="table" class="table-bordered table-hover table">
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>Nama Peminjam</th>
+                                    <th>Book Title</th>
+                                    <th>Quantity</th>
+                                    <th>Status</th>
+                                    <th>Date Start</th>
+                                    <th>Date End</th>
+                                    <th>Created At</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {{-- @foreach ($transactions as $transaction)
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
                                         <td>{{ $transaction->user_name }}</td>
@@ -85,14 +85,14 @@
                                         </td>
                                     </tr>
                                 @endforeach --}}
-                                </tbody>
-                            </table>
-                        </div>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
         </div>
-    @endcan
+    </div>
+    {{-- @endcan --}}
 @endsection
 
 @section('js')
@@ -188,7 +188,7 @@
                             // "serverSide": true,
                             "paging": true,
                             "lengthChange": true,
-                            "searching": true,
+                            // "searching": true,
                             "ordering": true,
                             "info": true,
                             "autoWidth": false,
@@ -197,14 +197,26 @@
                         .on('xhr', function() {
                             _this.datas = _this.table.ajax.json().data
                         })
-                    $('.filter-select').change(function() {
-                        let isReturned = $('#filter-status').val()
-                        _this.table.data(5).search(isReturned).draw();
+                    // $('.filter-select').change(function() {
+                    //     let isReturned = $('#filter-status').val()
+                    //     _this.table.data(5).search(isReturned).draw();
+                    // })
+                    // $('.filter-input-date').change(function() {
+                    //     let dateStart = $('#filter-date').val()
+                    //     _this.table.data(6).search(dateStart).draw();
+                    // });
+
+                    $('#filter-status, #filter-date').on('change', function() {
+                        let status = $('#filter-status').val();
+                        let dateStart = $('#filter-date').val();
+                        if (status != '' ||
+                            dateStart != '') {
+                            _this.table.ajax.url(apiUrl + '?status=' + status + '&date_start=' + dateStart)
+                                .load();
+                        } else {
+                            _this.table.ajax.url(apiUrl).load();
+                        }
                     })
-                    $('.filter-input-date').change(function() {
-                        let dateStart = $('#filter-date').val()
-                        _this.table.data(6).search(dateStart).draw();
-                    });
                 },
                 deleteData() {
                     this.actionUrl = '{{ url('transactions') }}' + '/' + this.data
@@ -221,4 +233,5 @@
             },
         })
     </script>
+    <script></script>
 @endsection

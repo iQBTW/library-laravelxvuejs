@@ -24,20 +24,22 @@ class TransactionController extends Controller
      */
     public function index()
     {
-        if (auth()->user()->role('Admin')) {
-            $transactionsToArr = Transaction::all()->toArray();
-            $dueTransactions = checkDueTransactions($transactionsToArr);
+        $transactionsToArr = Transaction::all()->toArray();
+        $dueTransactions = checkDueTransactions($transactionsToArr);
 
-            return view('pages.dashboard.peminjaman.index', compact('dueTransactions'));
-        }
-        else {
-            return abort(403);
-        }
+        return view('pages.dashboard.peminjaman.index', compact('dueTransactions'));
+        // if (auth()->user()->role('Admin')) {
+        // }
+        // else {
+        //     return abort(403);
+        // }
 
     }
 
     public function api(Request $request)
     {
+        $status = $request->input('status');
+        $datestart = $request->input('date_start');
         $transactions = Transaction::with('users')
             ->join('transaction_details', 'transactions.id', '=', 'transaction_details.transaction_id')
             ->join('users', 'transactions.user_id', '=', 'users.id')
@@ -56,6 +58,19 @@ class TransactionController extends Controller
                 'transactions.created_at as created_at',
             )
             ->latest();
+
+        // dd($request->all());
+
+        if (isset($status) or isset($datestart)) {
+            if ($datestart != '0') {
+                $transactions->whereDate('date_start', $datestart);
+            }
+            if ($status != '0') {
+                $transactions->where('status', $status);
+            }
+        }
+
+        dd($transactions->get()->toArray());
 
         $datatables = datatables()->of($transactions)
             ->filterColumn('status', function ($query, $keyword) {
