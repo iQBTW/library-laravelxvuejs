@@ -37,7 +37,7 @@ class UserFactory extends Factory
             'address' => $this->faker->address(),
             'remember_token' => Str::random(10),
             // 'member_id' => $this->faker->randomElement(Member::where('name', '=', 'Gold')->orWhere('name', '=', 'Silver')->orWhere('name', '=', 'Bronze')->pluck('id'))
-            'member_id' => $this->faker->randomElement(Member::where('name', '=', 'Admin')->pluck('id'))
+            // 'member_id' => $this->faker->randomElement(Member::where('name', '=', 'Admin')->pluck('id'))
         ];
     }
 

@@ -16,10 +16,10 @@ function convertDate($value)
 
 function is_Returned($value)
 {
-    if ($value == false) {
+    if ($value == 'not_returned') {
         return $value = "Belum dikembalikan";
     }
-    else if ($value == true) {
+    else if ($value == 'returned') {
         return $value = "Sudah dikembalikan";
     }
 }

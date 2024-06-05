@@ -33,10 +33,10 @@
                                 <div class="d-flex">
                                     <div class="form-group px-2">
                                         <select class="select2 form-control filter-select" name="status" id="filter-status"
-                                            v-model="filterStatus" style="width: 100%;" @change="datatable">
+                                            style="width: 100%;">
                                             <option value="" selected>Filter Status</option>
-                                            <option value="1">Sudah dikembalikan</option>
-                                            <option value="0">Belum dikembalikan</option>
+                                            <option value="returned">Sudah dikembalikan</option>
+                                            <option value="not_returned">Belum dikembalikan</option>
                                         </select>
                                     </div>
                                     <div class="form-group px-2">
@@ -195,26 +195,18 @@
                             "responsive": true,
                         })
                         .on('xhr', function() {
-                            _this.datas = _this.table.ajax.json().data
+                            _this.datas = _this.table.ajax.url(apiUrl)
                         })
-                    // $('.filter-select').change(function() {
-                    //     let isReturned = $('#filter-status').val()
-                    //     _this.table.data(5).search(isReturned).draw();
-                    // })
-                    // $('.filter-input-date').change(function() {
-                    //     let dateStart = $('#filter-date').val()
-                    //     _this.table.data(6).search(dateStart).draw();
-                    // });
-
                     $('#filter-status, #filter-date').on('change', function() {
                         let status = $('#filter-status').val();
                         let dateStart = $('#filter-date').val();
+
                         if (status != '' ||
                             dateStart != '') {
-                            _this.table.ajax.url(apiUrl + '?status=' + status + '&date_start=' + dateStart)
-                                .load();
+                            _this.datas = _this.table.ajax.url(apiUrl + '?status=' + status +
+                                '&date_start=' + dateStart).load();
                         } else {
-                            _this.table.ajax.url(apiUrl).load();
+                            _this.datas = _this.table.ajax.url(apiUrl).load();
                         }
                     })
                 },

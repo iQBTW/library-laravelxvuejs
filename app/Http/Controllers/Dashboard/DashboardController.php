@@ -95,15 +95,15 @@ class DashboardController extends Controller
 
     public function test_spatie()
     {
-        // $role = Role::create(
-        //     ['name' => 'Admin']
-        // );
-        // $permission = Permission::create(
-        //     ['name' => 'Access Peminjaman']
-        // );
+        $role = Role::create(
+            ['name' => 'Admin']
+        );
+        $permission = Permission::create(
+            ['name' => 'Access Peminjaman']
+        );
 
-        // $role->givePermissionTo($permission);
-        // $permission->assignRole($role);
+        $role->givePermissionTo($permission);
+        $permission->assignRole($role);
 
         // $user = auth()->user();
         // $user->assignRole('Admin');

@@ -53,8 +53,8 @@
                                             </span>
                                         @enderror
                                     </div>
-                                    <div class="mt-3 px-2 align-content-center">
-                                        <span class="font-bold text-lg text-center"> / </span>
+                                    <div class="align-content-center mt-3 px-2">
+                                        <span class="text-center text-lg font-bold"> / </span>
                                     </div>
                                     <div class="form-group w-50">
                                         <label for="name">Date End</label>
@@ -98,9 +98,9 @@
                                 <div class="form-group">
                                     <label for="status">Status Peminjaman</label>
                                     <Select class="form-control" name="status">
-                                        @if ($transaction->status == false)
+                                        @if ($transaction->status == 'not_returned')
                                             <option value="{{ $transaction->status }}">Belum dikembalikan</option>
-                                        @elseif($transaction->status == true)
+                                        @elseif($transaction->status == 'returned')
                                             <option value="{{ $transaction->status }}">Sudah dikembalikan</option>
                                         @endif
                                     </Select>

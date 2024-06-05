@@ -18,7 +18,7 @@ class TransactionFactory extends Factory
     public function definition(): array
     {
         return [
-            'user_id' => $this->faker->randomElement(User::where('member_id', '!=', 'Admin')->pluck('id')),
+            'user_id' => $this->faker->randomElement(User::pluck('id')),
             'date_start' => $this->faker->dateTimeBetween('now'),
             'date_end' => $this->faker->dateTimeBetween('+1 month', '+2 month'),
         ];

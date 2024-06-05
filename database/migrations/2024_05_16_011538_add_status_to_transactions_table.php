@@ -11,7 +11,7 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::table('transactions', function (Blueprint $table) {
-            $table->boolean('status')->default(false);
+            $table->enum('status', ['returned', 'not_returned'])->default('not_returned');
         });
     }
 

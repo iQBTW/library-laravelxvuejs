@@ -10,11 +10,11 @@ class Transaction extends Model
 {
     use HasFactory, Notifiable;
 
-    protected $fillable = ['user_id', 'status', 'date_start', 'date_end'];
+    protected $fillable = ['user_id', 'status', 'date_start', 'date_end', 'status'];
 
-    protected $casts = [
-        'status' => 'boolean'
-    ];
+    // protected $casts = [
+    //     'status' => 'boolean'
+    // ];
 
     public function users()
     {
