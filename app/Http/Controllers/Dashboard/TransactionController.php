@@ -59,72 +59,96 @@ class TransactionController extends Controller
             )
             ->latest();
 
-        // dd($request->all());
-
         if (isset($status) or isset($datestart)) {
-            if ($datestart != '0') {
-                $filterByDateStart = $transactions->whereDate('date_start', $datestart);
-                $datatables = datatables()->of($filterByDateStart)
-                    ->editColumn('status', function ($data) {
-                        $status = is_Returned($data->status);
-                        return $status;
-                    })
-                    ->editColumn('date_start', function ($data) {
-                        $formatedDateStart = convertDate($data->date_start);
-                        return $formatedDateStart;
-                    })
-                    ->editColumn('date_end', function ($data) {
-                        $formatedDate = convertDate($data->date_end);
-                        return $formatedDate;
-                    })
-                    ->editColumn('created_at', function ($data) {
-                        $formatedDate = convertDate($data->created_at);
-                        return $formatedDate;
-                    })
-                    ->addColumn('action', function ($data) {
-                        return '<a href="/transactions/' . $data->id . '/edit" class="btn btn-warning btn-sm"><i class="fa fa-edit"></i> Edit</a>
-                    <a href="/transactions/' . $data->id . '" class="btn btn-info btn-sm"><i class="fa fa-edit"></i> Detail</a>
-                    <a href="/transactions/' . $data->id . '/delete" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i> Delete</a>';
-                    })
-                    ->rawColumns(['action'])
-                    ->addIndexColumn();
-                return $datatables->make(true);
+            if ($datestart != null) {
+                // dd($request->all());
+                $transactions->whereDate('date_start', $datestart);
+                // $datatables = datatables()->of($filterByDateStart)
+                //     ->editColumn('status', function ($data) {
+                //         $status = is_Returned($data->status);
+                //         return $status;
+                //     })
+                //     ->editColumn('date_start', function ($data) {
+                //         $formatedDateStart = convertDate($data->date_start);
+                //         return $formatedDateStart;
+                //     })
+                //     ->editColumn('date_end', function ($data) {
+                //         $formatedDate = convertDate($data->date_end);
+                //         return $formatedDate;
+                //     })
+                //     ->editColumn('created_at', function ($data) {
+                //         $formatedDate = convertDate($data->created_at);
+                //         return $formatedDate;
+                //     })
+                //     ->addColumn('action', function ($data) {
+                //         return '<a href="/transactions/' . $data->id . '/edit" class="btn btn-warning btn-sm"><i class="fa fa-edit"></i> Edit</a>
+                //     <a href="/transactions/' . $data->id . '" class="btn btn-info btn-sm"><i class="fa fa-edit"></i> Detail</a>
+                //     <a href="/transactions/' . $data->id . '/delete" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i> Delete</a>';
+                //     })
+                //     ->rawColumns(['action'])
+                //     ->addIndexColumn();
+                // return $datatables->make(true);
             }
-            if ($status != '0') {
-                $filterByStatus = $transactions->where('status', $status);
-                $datatables = datatables()->of($filterByStatus)
-                    // ->editColumn('status', function ($data) {
-                    //     $status = is_Returned($data->status);
-                    //     return $status;
-                    // })
-                    ->editColumn('date_start', function ($data) {
-                        $formatedDateStart = convertDate($data->date_start);
-                        return $formatedDateStart;
-                    })
-                    ->editColumn('date_end', function ($data) {
-                        $formatedDate = convertDate($data->date_end);
-                        return $formatedDate;
-                    })
-                    ->editColumn('created_at', function ($data) {
-                        $formatedDate = convertDate($data->created_at);
-                        return $formatedDate;
-                    })
-                    ->addColumn('action', function ($data) {
-                        return '<a href="/transactions/' . $data->id . '/edit" class="btn btn-warning btn-sm"><i class="fa fa-edit"></i> Edit</a>
-                    <a href="/transactions/' . $data->id . '" class="btn btn-info btn-sm"><i class="fa fa-edit"></i> Detail</a>
-                    <a href="/transactions/' . $data->id . '/delete" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i> Delete</a>';
-                    })
-                    ->rawColumns(['action'])
-                    ->addIndexColumn();
-                return $datatables->make(true);
+            if ($status != null) {
+                $transactions->where('status', $status);
+                // $datatables = datatables()->of($filterByStatus)
+                //     ->editColumn('status', function ($data) {
+                //         $status = is_Returned($data->status);
+                //         return $status;
+                //     })
+                //     ->editColumn('date_start', function ($data) {
+                //         $formatedDateStart = convertDate($data->date_start);
+                //         return $formatedDateStart;
+                //     })
+                //     ->editColumn('date_end', function ($data) {
+                //         $formatedDate = convertDate($data->date_end);
+                //         return $formatedDate;
+                //     })
+                //     ->editColumn('created_at', function ($data) {
+                //         $formatedDate = convertDate($data->created_at);
+                //         return $formatedDate;
+                //     })
+                //     ->addColumn('action', function ($data) {
+                //         return '<a href="/transactions/' . $data->id . '/edit" class="btn btn-warning btn-sm"><i class="fa fa-edit"></i> Edit</a>
+                //     <a href="/transactions/' . $data->id . '" class="btn btn-info btn-sm"><i class="fa fa-edit"></i> Detail</a>
+                //     <a href="/transactions/' . $data->id . '/delete" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i> Delete</a>';
+                //     })
+                //     ->rawColumns(['action'])
+                //     ->addIndexColumn();
+                // return $datatables->make(true);
             }
+            $datatables = datatables()->of($transactions)
+                ->editColumn('status', function ($data) {
+                    $status = is_Returned($data->status);
+                    return $status;
+                })
+                ->editColumn('date_start', function ($data) {
+                    $formatedDateStart = convertDate($data->date_start);
+                    return $formatedDateStart;
+                })
+                ->editColumn('date_end', function ($data) {
+                    $formatedDate = convertDate($data->date_end);
+                    return $formatedDate;
+                })
+                ->editColumn('created_at', function ($data) {
+                    $formatedDate = convertDate($data->created_at);
+                    return $formatedDate;
+                })
+                ->addColumn('action', function ($data) {
+                    return '<a href="/transactions/' . $data->id . '/edit" class="btn btn-warning btn-sm"><i class="fa fa-edit"></i> Edit</a>
+            <a href="/transactions/' . $data->id . '" class="btn btn-info btn-sm"><i class="fa fa-edit"></i> Detail</a>
+            <a href="/transactions/' . $data->id . '/delete" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i> Delete</a>';
+                })
+                ->rawColumns(['action'])
+                ->addIndexColumn();
+            return $datatables->make(true);
         }
         else {
             $datatables = datatables()->of($transactions)
-                // ->editColumn('status', function ($data) {
-                //     $status = is_Returned($data->status);
-                //     return $status;
-                // })
+                ->editColumn('status', function ($data) {
+                    $status = is_Returned($data->status);
+                    return $status;
+                })
                 ->editColumn('date_start', function ($data) {
                     $formatedDateStart = convertDate($data->date_start);
                     return $formatedDateStart;
@@ -218,6 +242,8 @@ class TransactionController extends Controller
      */
     public function show(Transaction $transaction)
     {
+        $transactionsToArr = Transaction::all()->toArray();
+        $dueTransactions = checkDueTransactions($transactionsToArr);
         $books = Book::all();
         $users = User::all();
         $transaction = Transaction::with('transactionDetails')
@@ -239,38 +265,39 @@ class TransactionController extends Controller
             )
             ->findOrFail($transaction->id);
 
-        return view('pages.dashboard.peminjaman.show', compact('users', 'books', 'transaction'));
+        return view('pages.dashboard.peminjaman.show', compact('users', 'books', 'transaction', 'dueTransactions'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Transaction $transaction)
+    public function edit($id)
     {
+        // dd($id);
         $transactionsToArr = Transaction::all()->toArray();
         $dueTransactions = checkDueTransactions($transactionsToArr);
         $books = Book::all();
         $users = User::all();
-        $transaction = Transaction::with('transactionDetails')
+        // dd($transaction);
+        $transaction = Transaction::select(
+            'transactions.id as id',
+            'transaction_details.id as transaction_details_id',
+            'members.name as member_name',
+            'users.id as user_id',
+            'books.id as book_id',
+            'users.name as user_name',
+            'transaction_details.qty as qty',
+            'books.title as book_title',
+            'transactions.status as status',
+            'transactions.date_start as date_start',
+            'transactions.date_end as date_end',
+        )
             ->join('transaction_details', 'transactions.id', '=', 'transaction_details.transaction_id')
             ->join('users', 'transactions.user_id', '=', 'users.id')
             ->join('members', 'users.member_id', '=', 'members.id')
             ->join('books', 'transaction_details.book_id', '=', 'books.id')
-            ->select(
-                'transactions.id as id',
-                // 'transaction_details.id as transaction_details_id',
-                'members.name as member_name',
-                'users.id as user_id',
-                'books.id as book_id',
-                'users.name as user_name',
-                'transaction_details.qty as qty',
-                'books.title as book_title',
-                'transactions.status as status',
-                'transactions.date_start as date_start',
-                'transactions.date_end as date_end',
-            )
-            ->findOrFail($transaction->id);
-
+            ->findOrFail($id);
+        // dd($transaction->id);
         return view('pages.dashboard.peminjaman.edit', compact('users', 'books', 'transaction', 'dueTransactions'));
     }
 
