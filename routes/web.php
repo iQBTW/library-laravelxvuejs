@@ -12,10 +12,8 @@ use App\Http\Controllers\Dashboard\PublisherController;
 use App\Http\Controllers\Dashboard\TransactionController;
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth.login');
 });
-
-Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 Auth::routes();
 
