@@ -25,10 +25,10 @@
                         <div class="card-body">
                             <div class="justify-content-end pb-2">
                                 <button class="btn btn-primary" @click="addData()">
-                                    Create New Author
+                                    Add Author
                                 </button>
                             </div>
-                            <table id="table" class="table table-bordered table-hover">
+                            <table id="table" class="table-bordered table-hover table">
                                 <thead>
                                     <tr>
                                         <th>No</th>
@@ -40,9 +40,6 @@
                                         <th>Action</th>
                                     </tr>
                                 </thead>
-                                <tbody>
-
-                                </tbody>
                             </table>
                         </div>
                     </div>
@@ -50,12 +47,11 @@
             </div>
         </div>
 
-
         <div class="modal fade" id="modal-lg">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title">Add Author</h4>
+                        <h4 class="modal-title">@{{ modalTitle }}</h4>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -116,6 +112,7 @@
                             <div class="modal-footer justify-content-between">
                                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                                 <button type="submit" class="btn btn-primary">Save changes</button>
+
                             </div>
                         </form>
                     </div>
@@ -233,20 +230,18 @@
                 },
                 addData() {
                     this.data = {}
+                    this.isEdit = false
                     this.actionUrl = '{{ url('authors') }}'
                     $('#modal-lg').modal()
                 },
                 editData(event, row) {
                     this.data = this.datas[row]
                     this.isEdit = true
-                    this.actionUrl = '{{ url('authors') }}' + '/' + data.id
-                    axios.put(this.actionUrl, this.data, )
-                        .then(response => {
-                            location.reload();
-                        })
+                    this.actionUrl = '{{ url('authors') }}' + '/' + this.data.id;
+
                     $('#modal-lg').modal()
                 },
-                confirmDelete(event, row) {
+                confirmDelete(event, id) {
                     this.data = id
                     $('#confirmDeleteModal').modal()
                 },
@@ -260,6 +255,11 @@
                         })
                 },
             },
+            computed: {
+                modalTitle() {
+                    return this.isEdit === true ? 'Edit Author' : 'New Author'
+                }
+            }
         })
     </script>
 @endsection

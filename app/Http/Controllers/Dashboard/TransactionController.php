@@ -28,12 +28,6 @@ class TransactionController extends Controller
         $dueTransactions = checkDueTransactions($transactionsToArr);
 
         return view('pages.dashboard.peminjaman.index', compact('dueTransactions'));
-        // if (auth()->user()->role('Admin')) {
-        // }
-        // else {
-        //     return abort(403);
-        // }
-
     }
 
     public function api(Request $request)
@@ -61,61 +55,10 @@ class TransactionController extends Controller
 
         if (isset($status) or isset($datestart)) {
             if ($datestart != null) {
-                // dd($request->all());
                 $transactions->whereDate('date_start', $datestart);
-                // $datatables = datatables()->of($filterByDateStart)
-                //     ->editColumn('status', function ($data) {
-                //         $status = is_Returned($data->status);
-                //         return $status;
-                //     })
-                //     ->editColumn('date_start', function ($data) {
-                //         $formatedDateStart = convertDate($data->date_start);
-                //         return $formatedDateStart;
-                //     })
-                //     ->editColumn('date_end', function ($data) {
-                //         $formatedDate = convertDate($data->date_end);
-                //         return $formatedDate;
-                //     })
-                //     ->editColumn('created_at', function ($data) {
-                //         $formatedDate = convertDate($data->created_at);
-                //         return $formatedDate;
-                //     })
-                //     ->addColumn('action', function ($data) {
-                //         return '<a href="/transactions/' . $data->id . '/edit" class="btn btn-warning btn-sm"><i class="fa fa-edit"></i> Edit</a>
-                //     <a href="/transactions/' . $data->id . '" class="btn btn-info btn-sm"><i class="fa fa-edit"></i> Detail</a>
-                //     <a href="/transactions/' . $data->id . '/delete" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i> Delete</a>';
-                //     })
-                //     ->rawColumns(['action'])
-                //     ->addIndexColumn();
-                // return $datatables->make(true);
             }
             if ($status != null) {
                 $transactions->where('status', $status);
-                // $datatables = datatables()->of($filterByStatus)
-                //     ->editColumn('status', function ($data) {
-                //         $status = is_Returned($data->status);
-                //         return $status;
-                //     })
-                //     ->editColumn('date_start', function ($data) {
-                //         $formatedDateStart = convertDate($data->date_start);
-                //         return $formatedDateStart;
-                //     })
-                //     ->editColumn('date_end', function ($data) {
-                //         $formatedDate = convertDate($data->date_end);
-                //         return $formatedDate;
-                //     })
-                //     ->editColumn('created_at', function ($data) {
-                //         $formatedDate = convertDate($data->created_at);
-                //         return $formatedDate;
-                //     })
-                //     ->addColumn('action', function ($data) {
-                //         return '<a href="/transactions/' . $data->id . '/edit" class="btn btn-warning btn-sm"><i class="fa fa-edit"></i> Edit</a>
-                //     <a href="/transactions/' . $data->id . '" class="btn btn-info btn-sm"><i class="fa fa-edit"></i> Detail</a>
-                //     <a href="/transactions/' . $data->id . '/delete" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i> Delete</a>';
-                //     })
-                //     ->rawColumns(['action'])
-                //     ->addIndexColumn();
-                // return $datatables->make(true);
             }
             $datatables = datatables()->of($transactions)
                 ->editColumn('status', function ($data) {
@@ -171,9 +114,6 @@ class TransactionController extends Controller
 
             return $datatables->make(true);
         }
-
-        // dd($transactions->get()->toArray());
-
     }
 
     /**
@@ -273,12 +213,11 @@ class TransactionController extends Controller
      */
     public function edit($id)
     {
-        // dd($id);
         $transactionsToArr = Transaction::all()->toArray();
         $dueTransactions = checkDueTransactions($transactionsToArr);
         $books = Book::all();
         $users = User::all();
-        // dd($transaction);
+
         $transaction = Transaction::select(
             'transactions.id as id',
             'transaction_details.id as transaction_details_id',
@@ -297,7 +236,7 @@ class TransactionController extends Controller
             ->join('members', 'users.member_id', '=', 'members.id')
             ->join('books', 'transaction_details.book_id', '=', 'books.id')
             ->findOrFail($id);
-        // dd($transaction->id);
+
         return view('pages.dashboard.peminjaman.edit', compact('users', 'books', 'transaction', 'dueTransactions'));
     }
 

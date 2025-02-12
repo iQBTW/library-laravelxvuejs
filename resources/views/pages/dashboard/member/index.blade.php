@@ -26,7 +26,7 @@
                             <div class="justify-content-end pb-2">
                                 <button class="btn btn-primary" @click="addData()">Create New Member</button>
                             </div>
-                            <table id="table" class="table table-bordered table-hover">
+                            <table id="table" class="table-bordered table-hover table">
                                 <thead>
                                     <tr>
                                         <th>No</th>
@@ -174,6 +174,7 @@
                 },
                 addData() {
                     this.data = {}
+                    this.isEdit = false
                     axios.post(this.actionUrl, this.data)
                         .then(response => {
                             location.reload();

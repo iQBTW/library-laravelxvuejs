@@ -65,9 +65,8 @@
                         </p>
                     </a>
                 </li>
-                <li class="nav-item {{ request()->is('dashboard/catalog') ? 'menu-open' : '' }}">
-                    <a href="{{ route('catalog.index') }}"
-                        class="nav-link {{ request()->is('dashboard/catalog') ? 'active' : '' }}">
+                <li class="nav-item {{ request()->is('catalogs') ? 'menu-open' : '' }}">
+                    <a href="{{ url('catalogs') }}" class="nav-link {{ request()->is('catalogs') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-paperclip"></i>
                         <p>
                             Catalog

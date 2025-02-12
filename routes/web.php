@@ -23,22 +23,24 @@ Route::resource('members', MemberController::class);
 Route::resource('books', BookController::class);
 Route::resource('users', UserController::class);
 Route::resource('transactions', TransactionController::class);
+Route::resource('catalogs', CatalogController::class);
 
 Route::get('/api/publishers', [PublisherController::class, 'api']);
 Route::get('/api/members', [MemberController::class, 'api']);
 Route::get('/api/authors', [AuthorController::class, 'api']);
 Route::get('/api/books', [BookController::class, 'api']);
 Route::get('/api/transactions', [TransactionController::class, 'api']);
+Route::get('/api/catalogs', [CatalogController::class, 'api']);
 
 Route::prefix('dashboard')->middleware('auth')->group(function () {
     Route::get('overview', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('testspatie', [DashboardController::class, 'test_spatie'])->name('testspatie');
 
-    Route::prefix('catalog')->name('catalog.')->group(function () {
-        Route::get('', [CatalogController::class, 'index'])->name('index');
-        Route::get('create', [CatalogController::class, 'create'])->name('create');
-        Route::post('store', [CatalogController::class, 'store'])->name('store');
-    });
+    // Route::prefix('catalog')->name('catalog.')->group(function () {
+    //     Route::get('', [CatalogController::class, 'index'])->name('index');
+    //     Route::get('create', [CatalogController::class, 'create'])->name('create');
+    //     Route::post('store', [CatalogController::class, 'store'])->name('store');
+    // });
 
     // Route::prefix('publisher')->name('publisher.')->group(function (){
     //     Route::get('', [PublisherController::class, 'index'])->name('index');

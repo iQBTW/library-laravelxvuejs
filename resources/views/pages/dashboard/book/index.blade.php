@@ -51,7 +51,9 @@
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title">New Book</h4>
+                        <h4 class="modal-title">
+                            @{{ modalTitle }}
+                        </h4>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -260,6 +262,7 @@
                 },
                 addData() {
                     this.book = {}
+                    this.isEdit = false
                     axios.post(this.actionUrl, this.book)
                         .then(response => {
                             location.reload();
@@ -301,6 +304,9 @@
                     return this.datas.filter(book => {
                         return book.title.toLowerCase().includes(this.search.toLowerCase())
                     })
+                },
+                modalTitle() {
+                    return this.isEdit === true ? 'Edit Book' : 'New Book'
                 }
             }
         })

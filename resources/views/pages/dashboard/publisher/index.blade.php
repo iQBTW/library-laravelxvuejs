@@ -26,7 +26,7 @@
                             <div class="justify-content-end pb-2">
                                 <button class="btn btn-primary" @click="addData()">Create New Publisher</button>
                             </div>
-                            <table id="table" class="table table-bordered table-hover">
+                            <table id="table" class="table-bordered table-hover table">
                                 <thead>
                                     <tr>
                                         <th>No</th>
@@ -51,7 +51,7 @@
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title">New Publisher</h4>
+                        <h4 class="modal-title">@{{ modalTitle }}</h4>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -229,10 +229,8 @@
                 },
                 addData() {
                     this.data = {}
-                    axios.post(this.actionUrl, this.data)
-                        .then(response => {
-                            location.reload();
-                        });
+                    this.isEdit = false
+                    this.actionUrl = '{{ url('publishers') }}'
                     $('#modal-lg').modal()
                 },
                 editData(event, row) {
@@ -254,16 +252,12 @@
                             location.reload();
                         })
                 },
-                submitForm(event, id) {
-                    event.preventDefault();
-                    const _this = this;
-                    var actionUrl = !this.isEdit ? this.actionUrl : this.actionUrl + '/' + id
-                    axios.post(actionUrl, new FormData($($event.target)[0])).then(response => {
-                        $('modal-lg').modal('hide')
-                        _this.table.ajax.reload();
-                    })
-                },
             },
+            computed: {
+                modalTitle() {
+                    return this.isEdit ? 'Edit Publisher' : 'Add Publisher'
+                }
+            }
         })
     </script>
 @endsection

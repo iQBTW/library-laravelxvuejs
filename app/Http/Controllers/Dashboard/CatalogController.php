@@ -27,6 +27,19 @@ class CatalogController extends Controller
         return view('pages.dashboard.catalog.index', compact('catalogs', 'dueTransactions'));
     }
 
+    public function api()
+    {
+        $catalogs = Catalog::all();
+
+        foreach ($catalogs as $catalog) {
+            $catalog->date = convertDateTime($catalog->created_at);
+        }
+
+        $datatables = datatables()->of($catalogs)->addIndexColumn();
+
+        return $datatables->make(true);
+    }
+
     /**
      * Show the form for creating a new resource.
      */
@@ -44,11 +57,11 @@ class CatalogController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'name' => 'required|string|unique:name'
+            'name' => 'required|string|unique:catalogs,name'
         ]);
 
         Catalog::create($data);
-        return redirect()->route('catalog.index');
+        return redirect('catalogs');
     }
 
     /**
@@ -72,7 +85,13 @@ class CatalogController extends Controller
      */
     public function update(Request $request, Catalog $catalog)
     {
-        //
+        $data = $request->validate([
+            'name' => 'required|string',
+        ]);
+
+        $catalog->update($data);
+
+        return redirect('catalogs');
     }
 
     /**
@@ -80,6 +99,8 @@ class CatalogController extends Controller
      */
     public function destroy(Catalog $catalog)
     {
-        //
+        $catalog->delete();
+
+        return redirect('catalogs');
     }
 }
